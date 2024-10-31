@@ -3,7 +3,6 @@ version: '3'
 networks:
   laravel:
 
-
 services:
   app:
     build:
@@ -13,34 +12,37 @@ services:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       - ./src:/var/www/html:delegated
     depends_on:
       - php
       - redis
-      - mysql
+      - database
       - mailhog
     networks:
       - laravel
+    container_name: "${PROJECT_NAME}-app-service"
 
-  mysql:
-    image: mariadb:10.6
+  database: # --- choose any name you prefer, name of service
+    image: mariadb:10.6 # --- choose any tag you need
     restart: unless-stopped
     tty: true
+    container_name: "${PROJECT_NAME}-database-service"
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: homestead
-      MYSQL_USER: homestead
-      MYSQL_PASSWORD: secret
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
+      SERVICE_NAME: database
     networks:
       - laravel
 
   php:
+    container_name: "${PROJECT_NAME}-php-service"
     build:
       context: ./dockerfiles
       dockerfile: php.dockerfile
@@ -55,6 +57,7 @@ services:
       - laravel
 
   redis:
+    container_name: "${PROJECT_NAME}-redis-service"
     image: redis:alpine
     restart: unless-stopped
     ports:
@@ -100,12 +103,13 @@ services:
     volumes:
       - ./src:/var/www/html:delegated
     depends_on:
-      - mysql
+      - database
     entrypoint: [ 'php', '/var/www/html/artisan' ]
     networks:
       - laravel
 
   mailhog:
+    container_name: "${PROJECT_NAME}-mailhog-service"
     image: mailhog/mailhog:latest
     ports:
       - "1025:1025"
