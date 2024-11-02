@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Article extends Model
 {
-    //
+    public static $faIcon = 'fa-regular fa-file-alt';
+    public static $pageHeader = 'Articles';
 }

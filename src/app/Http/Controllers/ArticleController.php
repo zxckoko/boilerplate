@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use App\Http\Requests\StoreArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
-use Illuminate\Http\Request;
+
 
 class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        return view('livewire.index');
+        $articles = Article::orderBy('updated_at', 'desc')
+            ->paginate(10, ['id', 'title', 'head', 'body']);
+
+        return view('backend.articles.index', compact('articles'));
     }
 
     /**
@@ -26,7 +32,7 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreArticleRequest $request)
     {
         //
     }
@@ -34,15 +40,15 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LiveWire $liveWire)
+    public function show(Article $article)
     {
-        //
+        return $article;
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(LiveWire $liveWire)
+    public function edit(Article $article)
     {
         //
     }
@@ -50,7 +56,7 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LiveWire $liveWire)
+    public function update(UpdateArticleRequest $request, Article $article)
     {
         //
     }
@@ -58,7 +64,7 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LiveWire $liveWire)
+    public function destroy(Article $article)
     {
         //
     }

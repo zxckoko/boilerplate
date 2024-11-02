@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArticleController;
 
 Route::view('/', 'welcome');
 
@@ -12,10 +13,10 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+Route::get('articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
+
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], function () {
-    Route::controller(\App\Http\Controllers\ArticleController::class)->group(function () {
-        Route::get('article/index', 'index');
-    });
+    Route::resource('articles', ArticleController::class);
 });
 
 require __DIR__.'/auth.php';
