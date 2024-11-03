@@ -18,7 +18,9 @@ class ArticleController extends Controller
         $articles = Article::orderBy('updated_at', 'desc')
             ->paginate(10, ['id', 'title', 'head', 'body']);
 
-        return view('backend.articles.index', compact('articles'));
+        $title = Article::$pageHeader;
+
+        return view('backend.articles.index', compact('articles', 'title'));
     }
 
     /**
