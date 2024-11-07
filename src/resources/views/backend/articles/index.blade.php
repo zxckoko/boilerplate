@@ -47,13 +47,17 @@
 <!doctype html>
 {{-- set html tag to 'dark', display: none as default --}}
 {{-- the display: none aids in the FOUC issue, but may pose a challenge to using skeletons --}}
-<html lang="en" class="dark" style="display: none;">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark" style="display: none;">
 <head>
     <meta charset="UTF-8">
+    <meta name="application-name" content="{{ config('app.name') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>{{ isset($title) ? $title . ' | ' . config('app.name') : config('app.name') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     @livewireStyles
 </head>
 
@@ -142,33 +146,44 @@
                 <i class="{{ Article::$faIcon }} fa-fw"></i> {{ Article::$pageHeader }}
             </h1>
 
-            <table class="table-auto border-collapse border border-slate-500">
-                <thead>
-                    <tr>
-                        <th class="border border-slate-600 p-2">ID</th>
-                        <th class="border border-slate-600 p-2">Title</th>
-                        <th class="border border-slate-600 p-2">Head</th>
-                        <th class="border border-slate-600 p-2">Body</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($articles as $article)
-                        <tr class="hover:bg-lime-100 hover:text-black">
-                            <td class="border border-slate-700 p-2">{{ Str::of($article->id)->padLeft(6, 0) }}</td>
-                            <td class="border border-slate-700 p-2">{{ Str::of($article->title)->limit(32) }}</td>
-                            <td class="border border-slate-700 p-2">{{ Str::of($article->head)->limit(128) }}</td>
-                            <td class="border border-slate-700 p-2">{{ Str::of($article->body)->limit(128) }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+{{--            <div class="container">--}}
+{{--                <div class="card">--}}
+{{--                    <div class="card-header">Manage Articles</div>--}}
+{{--                    <div class="card-body">--}}
+                        {{ $dataTable->table() }}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+
+{{--            <table class="table-auto border-collapse border border-slate-500">--}}
+{{--                <thead>--}}
+{{--                    <tr>--}}
+{{--                        <th class="border border-slate-600 p-2">ID</th>--}}
+{{--                        <th class="border border-slate-600 p-2">Title</th>--}}
+{{--                        <th class="border border-slate-600 p-2">Head</th>--}}
+{{--                        <th class="border border-slate-600 p-2">Body</th>--}}
+{{--                    </tr>--}}
+{{--                </thead>--}}
+{{--                <tbody>--}}
+{{--                    @foreach ($articles as $article)--}}
+{{--                        <tr class="hover:bg-lime-100 hover:text-black">--}}
+{{--                            <td class="border border-slate-700 p-2">{{ Str::of($article->id)->padLeft(6, 0) }}</td>--}}
+{{--                            <td class="border border-slate-700 p-2">{{ Str::of($article->title)->limit(32) }}</td>--}}
+{{--                            <td class="border border-slate-700 p-2">{{ Str::of($article->head)->limit(128) }}</td>--}}
+{{--                            <td class="border border-slate-700 p-2">{{ Str::of($article->body)->limit(128) }}</td>--}}
+{{--                        </tr>--}}
+{{--                    @endforeach--}}
+{{--                </tbody>--}}
+{{--            </table>--}}
             <div class="my-4">
-                {{ $articles->onEachSide(1)->links() }}
+{{--                {{ $articles->onEachSide(1)->links() }}--}}
             </div>
         </div>
     </div>
 </div>
-
+<div id="tae"></div>
+{{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+<div id="tae"></div>
 @livewireScripts
 </body>
 </html>

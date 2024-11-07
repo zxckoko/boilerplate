@@ -13,6 +13,7 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+Route::get('articles/ajax', [ArticleController::class, 'ajax'])->name('articles.ajax');
 Route::get('articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], function () {

@@ -5,6 +5,8 @@ import '@fortawesome/fontawesome-free/js/all';
 
 import 'flowbite'; // flowbite, a tailwind component/ui library
 
+import 'laravel-datatables-vite'; // Reference: https://yajrabox.com/docs/laravel-datatables/master/quick-starter
+
 /*
 * - "nest", instead of complete replace, on.DOMContentLoaded messes up with 'hidden' class toggles
 * - "nest" did not fix it, enclosed fa element in a div instead and gave that the ID attr... better
