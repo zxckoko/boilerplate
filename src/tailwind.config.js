@@ -7,7 +7,7 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
-        './node_modules/flowbite/**/*.js',
+        './resources/js/**/*.vue',
     ],
 
     theme: {
@@ -18,10 +18,5 @@ export default {
         },
     },
 
-    plugins: [
-        require('flowbite/plugin'),
-        forms,
-    ],
-
-    prefix: '', // can add prefix to tailwind classes to avoid conflicts with other libraries
+    plugins: [forms],
 };

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,10 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // disable lazy loading in non-production environments
-        Model::preventLazyLoading(! $this->app->isProduction());
-
-        // instruct app to throw an exception when attempting to fill an unfillable attribute
-        Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
+        Vite::prefetch(concurrency: 3);
     }
 }
