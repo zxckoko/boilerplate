@@ -10,11 +10,11 @@
         "prefix": ""
     },
     "aliases": {
-        "components": "@/resources/js/components",
-        "composables": "@/resources/js/composables",
-        "utils": "@/resources/js/lib/utils",
-        "ui": "@/resources/js/components/ui",
-        "lib": "@/resources/js/lib"
+        "components": "@/components",
+        "composables": "@/composables",
+        "utils": "@/lib/utils",
+        "ui": "@/components/ui",
+        "lib": "@/lib"
     },
     "iconLibrary": "lucide"
 }
