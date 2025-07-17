@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
@@ -6,11 +6,18 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
-
+import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
+import AppSidebar from "@/components/AppSidebar.vue";
+import { Separator } from '@/components/ui/separator';
 const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
+    <SidebarProvider>
+
+        <AppSidebar />
+
+        <SidebarInset>
     <div>
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav
@@ -20,6 +27,8 @@ const showingNavigationDropdown = ref(false);
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 justify-between">
                         <div class="flex">
+                            <SidebarTrigger className="-ml-1" />
+                            <Separator orientation="vertical" class="mx-4" />
                             <!-- Logo -->
                             <div class="flex shrink-0 items-center">
                                 <Link :href="route('dashboard')">
@@ -195,4 +204,6 @@ const showingNavigationDropdown = ref(false);
             </main>
         </div>
     </div>
+        </SidebarInset>
+    </SidebarProvider>
 </template>
