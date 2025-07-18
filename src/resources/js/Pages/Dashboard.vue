@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import { BellRing, Check } from 'lucide-vue-next'
-import { cn } from '@/lib/utils'
+import { Head, Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch'
+import { Switch } from '@/components/ui/switch';
+import { UserColumns } from '@/components/users/columns.ts';
+import DataTable from '@/components/datatable/datatable.vue';
+import { cn } from '@/lib/utils';
+import { BellRing, Check } from 'lucide-vue-next';
+
 import {
     Card,
     CardContent,
@@ -12,7 +15,9 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card'
+} from '@/components/ui/card';
+
+defineProps({ users: Array, usersCount: Number })
 
 const notifications = [
     {
@@ -85,6 +90,10 @@ const notifications = [
                         </Button>
                     </CardFooter>
                 </Card>
+
+                <div class="container py-10 mx-auto">
+                    <DataTable :columns="UserColumns" :data="users" />
+                </div>
             </div>
         </div>
     </AuthenticatedLayout>
