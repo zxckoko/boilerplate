@@ -33,7 +33,7 @@ const table = useVueTable({
 </script>
 
 <template>
-    <div class="bg-white border rounded-md py-2">
+    <div class="bg-white dark:bg-gray-800 border rounded-md py-2">
         <Table>
             <TableHeader>
                 <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
@@ -66,7 +66,7 @@ const table = useVueTable({
             </TableBody>
         </Table>
     </div>
-    <div class="bg-white border rounded-md py-2">
+    <div class="bg-white dark:bg-gray-800 border rounded-md py-2">
         <DataTablePagination :table="table" />
     </div>
 </template>

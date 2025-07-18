@@ -9,6 +9,8 @@ import { Link } from '@inertiajs/vue3';
 import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar.vue";
 import { Separator } from '@/components/ui/separator';
+import DarkModeToggle from "@/components/DarkModeToggle.vue";
+
 const showingNavigationDropdown = ref(false);
 </script>
 
@@ -26,11 +28,13 @@ const showingNavigationDropdown = ref(false);
                 <!-- Primary Navigation Menu -->
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 justify-between">
-                        <div class="flex">
+                        <div class="flex items-center">
                             <SidebarTrigger className="-ml-1" />
                             <Separator orientation="vertical" class="mx-4" />
+                            <DarkModeToggle className="-ml-1" />
+                            <Separator orientation="vertical" class="mx-4" />
                             <!-- Logo -->
-                            <div class="flex shrink-0 items-center">
+                            <div class="flex shrink-0">
                                 <Link :href="route('dashboard')">
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
