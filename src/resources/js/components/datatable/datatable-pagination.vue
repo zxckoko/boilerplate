@@ -17,7 +17,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import DataTableViewOptions from "@/components/datatable/datatable-toggle.vue";
 
 interface DataTablePaginationProps {
     table: Table<Task>
@@ -32,9 +31,6 @@ defineProps<DataTablePaginationProps>()
             {{ table.getFilteredRowModel().rows.length }} row(s) selected.
         </div>
         <div class="flex items-center space-x-6 lg:space-x-8">
-            <div class="flex items-center space-x-2">
-                <DataTableViewOptions :table="table" />
-            </div>
             <div class="flex items-center space-x-2">
                 <p class="text-sm font-medium">
                     Rows per page

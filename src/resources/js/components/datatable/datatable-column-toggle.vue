@@ -36,7 +36,7 @@ const columns = computed(() => props.table.getAllColumns()
                 class="hidden h-8 ml-auto lg:flex"
             >
                 <EyeIcon class="w-4 h-4 mr-2" />
-                View
+                Columns
             </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" class="w-[150px]">

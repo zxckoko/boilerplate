@@ -2,9 +2,25 @@ import { h } from 'vue';
 import { ColumnDef } from '@tanstack/vue-table';
 import DropdownAction from '@/components/datatable/datatable-dropdown.vue';
 import DataTableColumnHeader from '@/components/datatable/datatable-header.vue';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export const UserColumns: ColumnDef<Users>[] = [
 // export const columns = [
+    {
+        id: 'select',
+        header: ({ table }) => h(Checkbox, {
+            'modelValue': table.getIsAllPageRowsSelected(),
+            'onUpdate:modelValue': (value: boolean) => table.toggleAllPageRowsSelected(!!value),
+            'ariaLabel': 'Select all',
+        }),
+        cell: ({ row }) => h(Checkbox, {
+            'modelValue': row.getIsSelected(),
+            'onUpdate:modelValue': (value: boolean) => row.toggleSelected(!!value),
+            'ariaLabel': 'Select row',
+        }),
+        enableSorting: false,
+        enableHiding: false,
+    },
     {
         accessorKey: 'name',
         // header: () => h('div', { class: 'text-left font-medium' }, 'Name'),
@@ -69,6 +85,7 @@ export const UserColumns: ColumnDef<Users>[] = [
 
             return h('div', { class: 'relative' }, h(DropdownAction, {
                 record,
+                onExpand: row.toggleExpanded,
             }))
         },
     },
