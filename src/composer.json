@@ -12,10 +12,17 @@
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
+        "mpociot/teamwork": "^10.0",
+        "mpociot/versionable": "^4.4",
+        "spatie/laravel-activitylog": "^4.10",
+        "spatie/laravel-permission": "^6.20",
+        "spatie/laravel-responsecache": "^7.7",
+        "spatie/laravel-sluggable": "^3.7",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "kitloong/laravel-migrations-generator": "^7.1",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.41",
