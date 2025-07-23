@@ -36,11 +36,13 @@ services:
       #MYSQL_USER: ${SQL_USER} #
       #MYSQL_PASSWORD: ${SQL_PASSWORD} #
       #MYSQL_ROOT_PASSWORD: ${SQL_ROOT_PASSWORD} #
-      POSTGRES_DB: ${SQL_DATABASE} #
-      POSTGRES_USER: ${SQL_USER} #
-      POSTGRES_PASSWORD: ${SQL_PASSWORD} #
+      POSTGRES_DB: "${SQL_DATABASE}" #
+      POSTGRES_USER: "${SQL_USER}" #
+      POSTGRES_PASSWORD: "${SQL_PASSWORD}" #
       SERVICE_TAGS: dev
       SERVICE_NAME: database
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
     networks:
       - laravel
 
@@ -52,6 +54,8 @@ services:
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
+    # "user" value will determine the default user used when accessing the docker container
+    # user: 'www-data:www-data'
     ports:
       - "9000:9000"
     volumes:

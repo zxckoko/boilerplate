@@ -47,6 +47,7 @@ RUN apk add --no-cache \
     ttf-droid \
     ttf-freefont \
     ttf-liberation \
+    graphviz \
     # more fonts
   && apk add --no-cache --virtual .build-deps \
     msttcorefonts-installer \
