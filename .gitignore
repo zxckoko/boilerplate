@@ -4,3 +4,5 @@ mysql
 .env
 .env.backup
 .env.production
+data
+dbdata
