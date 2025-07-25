@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { UserColumns } from '@/components/users/columns.ts';
 import DataTable from '@/components/datatable/datatable.vue';
 import { cn } from '@/lib/utils';
-import { BellRing, Check } from 'lucide-vue-next';
+import { BellRing, Check, ChevronsRight } from 'lucide-vue-next';
 
 import {
     Card,
@@ -17,7 +17,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 
-defineProps({ users: Array, usersCount: Number })
+// defineProps({ users: Object })
 
 const notifications = [
     {
@@ -32,7 +32,20 @@ const notifications = [
         title: 'Your subscription is expiring soon!',
         description: '2 hours ago',
     },
-]
+];
+</script>
+
+<script lang="ts">
+import Pagination from '@/components/common/Pagination.vue';
+
+export default {
+    components: {
+        Pagination,
+    },
+    props: {
+        users: Object,
+    },
+}
 </script>
 
 <template>
@@ -91,9 +104,55 @@ const notifications = [
                     </CardFooter>
                 </Card>
 
-                <div class="container py-10 mx-auto">
-                    <DataTable :columns="UserColumns" :data="users" />
+                <div class="my-4 rounded-md shadow overflow-x-auto">
+                    <table class="table-auto">
+                        <thead class="bg-white dark:bg-gray-800">
+                            <tr class="text-left font-bold">
+                                <th class="pb-4 pt-6 px-6">Name</th>
+                                <th class="pb-4 pt-6 px-6">Email Address</th>
+                                <th class="pb-4 pt-6 px-6">Address #1</th>
+                                <th class="pb-4 pt-6 px-6" colspan="2">Address #2</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-gray-700">
+                            <tr v-for="organization in users.data" :key="organization.id" class="hover:bg-gray-900 dark:hover:bg-gray-900 focus-within:bg-gray-900">
+                                <td class="border-t">
+                                    <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="`/organizations/${organization.id}/edit`">
+                                        {{ organization.name }}
+                                    </Link>
+                                </td>
+                                <td class="border-t">
+                                    <Link class="flex items-center px-6 py-4" :href="`/organizations/${organization.id}/edit`" tabindex="-1">
+                                        {{ organization.email }}
+                                    </Link>
+                                </td>
+                                <td class="border-t">
+                                    <Link class="flex items-center px-6 py-4" :href="`/organizations/${organization.id}/edit`" tabindex="-1">
+                                        {{ organization.address_1 }}
+                                    </Link>
+                                </td>
+                                <td class="border-t">
+                                    <Link class="flex items-center px-6 py-4" :href="`/organizations/${organization.id}/edit`" tabindex="-1">
+                                        {{ organization.address_2 }}
+                                    </Link>
+                                </td>
+                                <td class="w-px border-t">
+                                    <Link class="flex items-center px-4" :href="`/organizations/${organization.id}/edit`" tabindex="-1">
+                                        <ChevronsRight class="block w-6 h-6 fill-gray-400" />
+                                    </Link>
+                                </td>
+                            </tr>
+                            <tr v-if="users.data.length === 0">
+                                <td class="px-6 py-4 border-t" colspan="4">No users found... Try again!</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+                <Pagination :links="users.links" />
+
+<!--                <div class="container py-10 mx-auto">-->
+<!--                    <DataTable :columns="UserColumns" :data="users" />-->
+<!--                </div>-->
             </div>
         </div>
     </AuthenticatedLayout>
