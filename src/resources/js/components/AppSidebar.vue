@@ -158,6 +158,10 @@ const data = {
                     title: 'Telescope',
                     url: '/telescope',
                 },
+                {
+                    title: 'Log Viewer',
+                    url: '/log-viewer',
+                },
             ],
         },
     ],
