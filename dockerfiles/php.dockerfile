@@ -30,7 +30,7 @@ RUN apk update && apk upgrade
 # Reference: https://github.com/mlocati/docker-php-extension-installer
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions gd zip pdo pdo_mysql pgsql pdo_pgsql
+RUN install-php-extensions gd zip pdo pdo_mysql pgsql pdo_pgsql pcntl
 RUN install-php-extensions opcache
 RUN IPE_ICU_EN_ONLY=1 install-php-extensions intl # Resolves: artisan show:db and see
 
