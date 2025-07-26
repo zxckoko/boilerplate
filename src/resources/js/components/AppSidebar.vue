@@ -12,6 +12,7 @@ import {
     PieChart,
     Settings2,
     SquareTerminal,
+    Blocks
 } from 'lucide-vue-next'
 import NavMain from '@/components/NavMain.vue'
 import NavProjects from '@/components/NavProjects.vue'
@@ -137,6 +138,25 @@ const data = {
                 {
                     title: 'Limits',
                     url: '#',
+                },
+            ],
+        },
+        {
+            title: 'Packages',
+            url: '#',
+            icon: Blocks,
+            items: [
+                {
+                    title: 'Horizon',
+                    url: '/horizon',
+                },
+                {
+                    title: 'Pulse',
+                    url: '/pulse',
+                },
+                {
+                    title: 'Telescope',
+                    url: '/telescope',
                 },
             ],
         },
