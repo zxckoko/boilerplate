@@ -32,6 +32,9 @@ class UserFactory extends Factory
             'email_verified_at' => now()->addSeconds(rand(60, 600)),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => rand(1, 100) % 10 === 0 ? now() : null,
         ];
     }
 

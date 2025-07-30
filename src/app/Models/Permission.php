@@ -35,4 +35,9 @@ class Permission extends BasePermission
     {
         return $this->updated_at->diffForHumans();
     }
+
+    public function getDeletedAtFormattedAttribute()
+    {
+        return $this->deleted_at->diffForHumans();
+    }
 }

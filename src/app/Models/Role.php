@@ -35,4 +35,9 @@ class Role extends BaseRole
     {
         return $this->updated_at->diffForHumans();
     }
+
+    public function getDeletedAtFormattedAttribute()
+    {
+        return $this->deleted_at->diffForHumans();
+    }
 }
