@@ -9,7 +9,11 @@ class Role extends BaseRole
 {
     use SoftDeletes;
 
-    protected $appends = ['created_at_formatted', 'updated_at_formatted'];
+    protected $appends = [
+        'created_at_formatted',
+        'updated_at_formatted',
+        'deleted_at_formatted',
+    ];
 
     public function created_by()
     {
@@ -38,6 +42,8 @@ class Role extends BaseRole
 
     public function getDeletedAtFormattedAttribute()
     {
-        return $this->deleted_at->diffForHumans();
+        return $this->deleted_at !== null
+            ? $this->deleted_at->diffForHumans()
+            : null;
     }
 }

@@ -80,6 +80,8 @@ class User extends Authenticatable
 
     public function getDeletedAtFormattedAttribute()
     {
-        return $this->deleted_at->diffForHumans();
+        return $this->deleted_at !== null
+            ? $this->deleted_at->diffForHumans()
+            : null;
     }
 }
