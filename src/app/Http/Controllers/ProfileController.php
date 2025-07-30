@@ -16,7 +16,10 @@ class ProfileController extends Controller
 {
     public function index(): Response
     {
-        $users = User::paginate(perPage: 10, columns: ['id', 'name', 'email', 'address_1', 'address_2']);
+        $users = User
+            ::with(['created_by', 'updated_by'])
+            ->latest('updated_at')
+            ->paginate(10);
 
         return Inertia::render('Dashboard', [
             'users' => $users,

@@ -53,107 +53,112 @@ export default {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2
-                class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
-            >
-                Dashboard
-            </h2>
+            <h1 class="text-2xl font-bold">Dashboard</h1>
         </template>
 
-        <div class="py-4">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <Card :class="cn('w-[380px]', $attrs.class ?? '')">
-                    <CardHeader>
-                        <CardTitle>Notifications</CardTitle>
-                        <CardDescription>You have 3 unread messages.</CardDescription>
-                    </CardHeader>
-                    <CardContent class="grid gap-4">
-                        <div class=" flex items-center space-x-4 rounded-md border p-4">
-                            <BellRing />
-                            <div class="flex-1 space-y-1">
+        <div class="max-w-full m-8 mb-0 pb-8">
+            <Card :class="cn('mb-8 w-[380px]', $attrs.class ?? '')">
+                <CardHeader>
+                    <CardTitle>Notifications</CardTitle>
+                    <CardDescription>You have 3 unread messages.</CardDescription>
+                </CardHeader>
+                <CardContent class="grid gap-4">
+                    <div class=" flex items-center space-x-4 rounded-md border p-4">
+                        <BellRing />
+                        <div class="flex-1 space-y-1">
+                            <p class="text-sm font-medium leading-none">
+                                Push Notifications
+                            </p>
+                            <p class="text-sm text-muted-foreground">
+                                Send notifications to device.
+                            </p>
+                        </div>
+                        <Switch />
+                    </div>
+                    <div>
+                        <div
+                            v-for="(notification, index) in notifications" :key="index"
+                            class="mb-4 grid grid-cols-[25px_minmax(0,1fr)] items-start pb-4 last:mb-0 last:pb-0"
+                        >
+                            <span class="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
+                            <div class="space-y-1">
                                 <p class="text-sm font-medium leading-none">
-                                    Push Notifications
+                                    {{ notification.title }}
                                 </p>
                                 <p class="text-sm text-muted-foreground">
-                                    Send notifications to device.
+                                    {{ notification.description }}
                                 </p>
                             </div>
-                            <Switch />
                         </div>
-                        <div>
-                            <div
-                                v-for="(notification, index) in notifications" :key="index"
-                                class="mb-4 grid grid-cols-[25px_minmax(0,1fr)] items-start pb-4 last:mb-0 last:pb-0"
-                            >
-                                <span class="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
-                                <div class="space-y-1">
-                                    <p class="text-sm font-medium leading-none">
-                                        {{ notification.title }}
-                                    </p>
-                                    <p class="text-sm text-muted-foreground">
-                                        {{ notification.description }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </CardContent>
-                    <CardFooter>
-                        <Button class="w-full">
-                            <Check class="mr-2 h-4 w-4" /> Mark all as read
-                        </Button>
-                    </CardFooter>
-                </Card>
+                    </div>
+                </CardContent>
+                <CardFooter>
+                    <Button class="w-full">
+                        <Check class="mr-2 h-4 w-4" /> Mark all as read
+                    </Button>
+                </CardFooter>
+            </Card>
 
-                <div class="my-4 rounded-md shadow overflow-x-auto">
-                    <table class="table-auto">
-                        <thead class="bg-white dark:bg-gray-800">
-                            <tr class="text-left font-bold">
-                                <th class="pb-4 pt-6 px-6">Name</th>
-                                <th class="pb-4 pt-6 px-6">Email Address</th>
-                                <th class="pb-4 pt-6 px-6">Address #1</th>
-                                <th class="pb-4 pt-6 px-6" colspan="2">Address #2</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white dark:bg-gray-700">
-                            <tr v-for="organization in users.data" :key="organization.id" class="hover:bg-gray-900 dark:hover:bg-gray-900 focus-within:bg-gray-900">
-                                <td class="border-t">
-                                    <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="`/organizations/${organization.id}/edit`">
-                                        {{ organization.name }}
-                                    </Link>
-                                </td>
-                                <td class="border-t">
-                                    <Link class="flex items-center px-6 py-4" :href="`/organizations/${organization.id}/edit`" tabindex="-1">
-                                        {{ organization.email }}
-                                    </Link>
-                                </td>
-                                <td class="border-t">
-                                    <Link class="flex items-center px-6 py-4" :href="`/organizations/${organization.id}/edit`" tabindex="-1">
-                                        {{ organization.address_1 }}
-                                    </Link>
-                                </td>
-                                <td class="border-t">
-                                    <Link class="flex items-center px-6 py-4" :href="`/organizations/${organization.id}/edit`" tabindex="-1">
-                                        {{ organization.address_2 }}
-                                    </Link>
-                                </td>
-                                <td class="w-px border-t">
-                                    <Link class="flex items-center px-4" :href="`/organizations/${organization.id}/edit`" tabindex="-1">
-                                        <ChevronsRight class="block w-6 h-6 fill-gray-400" />
-                                    </Link>
-                                </td>
-                            </tr>
-                            <tr v-if="users.data.length === 0">
-                                <td class="px-6 py-4 border-t" colspan="4">No users found... Try again!</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <Pagination :links="users.links" />
+            <table class="table-auto w-full mb-6 border-collapse border border-gray-600">
+                <thead class="bg-white dark:bg-gray-800">
+                <tr class="text-left font-bold">
+                    <th class="border border-gray-600 p-4">Name</th>
+                    <th class="border border-gray-600 p-4">Email</th>
+                    <th class="border border-gray-600 p-4">Address #1</th>
+                    <th class="border border-gray-600 p-4">Address #2</th>
+                    <th class="border border-gray-600 p-4">Created By</th>
+                    <th class="border border-gray-600 p-4" colspan="2">Updated By</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-gray-700">
+                <tr v-for="user in users.data" :key="user.id" class="hover:bg-gray-900 dark:hover:bg-gray-900 focus-within:bg-gray-900">
+                    <td class="border-t">
+                        <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="route('users.edit', user.id)">
+                            {{ user.name }}
+                        </Link>
+                    </td>
+                    <td class="border-t">
+                        <Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">
+                            {{ user.email }}
+                        </Link>
+                    </td>
+                    <td class="border-t">
+                        <Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">
+                            {{ user.address_1 }}
+                        </Link>
+                    </td>
+                    <td class="border-t">
+                        <Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">
+                            {{ user.address_2 }}
+                        </Link>
+                    </td>
+                    <td class="border-t">
+                        <Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">
+                            {{ user.created_by.name + " @ " + user.created_at_formatted }}
+                        </Link>
+                    </td>
+                    <td class="border-t">
+                        <Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">
+                            {{ user.updated_by.name + " @ " + user.updated_at_formatted }}
+                        </Link>
+                    </td>
+                    <td class="border-t">
+                        <Link class="flex items-center px-4" :href="route('users.edit', user.id)" tabindex="-1">
+                            <ChevronsRight class="block w-6 h-6 fill-gray-400" />
+                        </Link>
+                    </td>
+                </tr>
+                <tr v-if="users.data.length === 0">
+                    <td class="border-t" colspan="4">No users found... Try again!</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <Pagination :links="users.links" class="mb-6"/>
 
 <!--                <div class="container py-10 mx-auto">-->
 <!--                    <DataTable :columns="UserColumns" :data="users" />-->
 <!--                </div>-->
-            </div>
         </div>
     </AuthenticatedLayout>
 </template>
