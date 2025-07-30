@@ -10,7 +10,7 @@
             </h1>
         </template>
 
-        <div class="max-w-full m-8">
+        <div class="max-w-full m-8 mb-0 pb-8">
             <Form @submit="form.patch(route('users.update', user.id))" class="flex flex-col space-y-4 max-w-1/3 my-2">
                 <FloatLabel variant="in">
                     <InputText class="w-full" id="name" type="text" v-model="form.name" autofocus />
@@ -30,7 +30,8 @@
                 </FloatLabel>
 
                 <Message v-if="form.errors?.message" severity="error" variant="simple">{{ form.errors.message }}</Message>
-                <Button type="submit" severity="primary" label="Submit" />
+
+                <Button type="submit" severity="primary" icon="pi pi-save" label="Submit" />
             </Form>
 
             <div class="w-1/3">
@@ -44,13 +45,12 @@
 
 <script lang="ts" setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, useForm, router } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { Form } from '@primevue/forms';
 import Message from 'primevue/message';
 import InputText from 'primevue/inputtext';
-import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
-
+import FloatLabel from 'primevue/floatlabel';
 import Divider from 'primevue/divider';
 
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";

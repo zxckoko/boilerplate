@@ -6,7 +6,7 @@
             <h1 class="text-2xl font-bold">Users</h1>
         </template>
 
-        <div class="max-w-full m-8">
+        <div class="max-w-full m-8 mb-0 pb-8">
             <div class="flex items-center justify-between mb-6">
                 <p>Search and Filter placeholder</p>
                 <Button as="a" type="button" severity="primary" label="Create User" :href="route('users.create')" />

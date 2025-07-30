@@ -1,5 +1,6 @@
 <template>
-    <Button @click="destroy(record)" type="button" icon="pi pi-exclamation-circle" severity="danger" label="Delete User" variant="simple" class="w-1/3" outlined />
+    <Button @click="destroy(record)" type="button" icon="pi pi-exclamation-circle" severity="danger" label="Delete"
+            variant="simple" class="w-1/3" outlined />
     <ConfirmDialog></ConfirmDialog>
 </template>
 <script lang="ts" setup>

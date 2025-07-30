@@ -1,34 +1,47 @@
 <template>
-    <Head title="Edit Permission" />
+    <Head :title="form.name" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                Edit Permission
-            </h2>
+            <h1 class="text-2xl font-bold">
+                <Link class="text-indigo-400 hover:text-indigo-600" :href="route('roles.index')">Permissions</Link>
+                <span class="text-indigo-400 font-medium">//</span>
+                {{ form.name }}
+            </h1>
         </template>
 
-        <div class="max-w-full m-8">
+        <div class="max-w-full m-8 mb-0 pb-8">
             <Form @submit="form.patch(route('permissions.update', permission.id))" class="flex flex-col space-y-4 max-w-1/3 my-2">
-                <InputText type="text" placeholder="Permission" v-model="form.name" autofocus />
+                <FloatLabel variant="in">
+                    <InputText class="w-full" id="name" type="text" v-model="form.name" autofocus />
+                    <label for="name">Name</label>
+                </FloatLabel>
+
                 <Message v-if="form.errors?.message" severity="error" variant="simple">{{ form.errors.message }}</Message>
 
-                <Button type="submit" severity="primary" label="Submit" />
+                <Button type="submit" severity="primary" icon="pi pi-save" label="Submit" />
             </Form>
-            <Form @submit="form.delete(route('permissions.destroy', permission.id))" class="flex flex-col space-y-4 max-w-1/3 my-2">
-                <Button type="submit" severity="danger" label="Delete Role" variant="simple" outlined />
-            </Form>
+
+            <div class="w-1/3">
+                <Divider>//</Divider>
+            </div>
+
+            <ConfirmDeleteDialog :record="route('permissions.destroy', permission.id)"></ConfirmDeleteDialog>
         </div>
     </AuthenticatedLayout>
 </template>
 
 <script lang="ts" setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { useForm } from '@inertiajs/vue3';
-import { Form, FormField } from '@primevue/forms';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Form } from '@primevue/forms';
 import Message from 'primevue/message';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import FloatLabel from "primevue/floatlabel";
+import Divider from 'primevue/divider';
+
+import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";
 
 const props = defineProps({
     permission: Object

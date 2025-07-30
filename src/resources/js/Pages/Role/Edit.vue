@@ -1,28 +1,37 @@
 <template>
-    <Head title="Edit Role" />
+    <Head :title="form.name" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                Edit Role
-            </h2>
+            <h1 class="text-2xl font-bold">
+                <Link class="text-indigo-400 hover:text-indigo-600" :href="route('roles.index')">Roles</Link>
+                <span class="text-indigo-400 font-medium">//</span>
+                {{ form.name }}
+            </h1>
         </template>
 
-        <div class="max-w-full m-8">
+        <div class="max-w-full m-8 mb-0 pb-8">
             <Form @submit="form.patch(route('roles.update', role.id))" class="flex flex-col space-y-4 max-w-1/3 my-2">
-                <InputText type="text" placeholder="Role" v-model="form.name" autofocus />
-                <Message v-if="form.errors?.message" severity="error" variant="simple">{{ form.errors.message }}</Message>
+                <FloatLabel variant="in">
+                    <InputText class="w-full" id="name" type="text" v-model="form.name" autofocus />
+                    <label for="name">Name</label>
+                </FloatLabel>
 
                 <div v-for="permission of permissions" :key="permission" class="flex items-center gap-2">
                     <Checkbox v-model="form.permissions" :inputId="permission" :value="permission" />
                     <label class="cursor-pointer" :for="permission">{{ permission }}</label>
                 </div>
 
-                <Button type="submit" severity="primary" label="Submit" />
+                <Message v-if="form.errors?.message" severity="error" variant="simple">{{ form.errors.message }}</Message>
+
+                <Button type="submit" severity="primary" icon="pi pi-save" label="Submit" />
             </Form>
-            <Form @submit="form.delete(route('roles.destroy', role.id))" class="flex flex-col space-y-4 max-w-1/3 my-2">
-                <Button type="submit" severity="danger" label="Delete Role" variant="simple" outlined />
-            </Form>
+
+            <div class="w-1/3">
+                <Divider>//</Divider>
+            </div>
+
+            <ConfirmDeleteDialog :record="route('roles.destroy', role.id)"></ConfirmDeleteDialog>
 
         </div>
     </AuthenticatedLayout>
@@ -30,12 +39,16 @@
 
 <script lang="ts" setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { Form } from '@primevue/forms';
 import Message from 'primevue/message';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import FloatLabel from 'primevue/floatlabel';
+import Divider from 'primevue/divider';
 import Checkbox from "primevue/checkbox";
+
+import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";
 
 const props = defineProps({
     role: Object,
