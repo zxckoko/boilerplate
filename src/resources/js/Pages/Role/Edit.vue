@@ -17,9 +17,11 @@
                     <label for="name">Name</label>
                 </FloatLabel>
 
-                <div v-for="permission of permissions" :key="permission" class="flex items-center gap-2">
-                    <Checkbox v-model="form.permissions" :inputId="permission" :value="permission" />
-                    <label class="cursor-pointer" :for="permission">{{ permission }}</label>
+                <div class="w-full grid grid-cols-2 items-center gap-4">
+                    <div v-for="permission of permissions" :key="permission" class="flex gap-2">
+                        <Checkbox v-model="form.permissions" :inputId="permission" :value="permission" />
+                        <label class="cursor-pointer" :for="permission">{{ permission }}</label>
+                    </div>
                 </div>
 
                 <Message v-if="form.errors?.message" severity="error" variant="simple">{{ form.errors.message }}</Message>
