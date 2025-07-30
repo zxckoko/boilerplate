@@ -63,16 +63,16 @@ const data = {
             isActive: true,
             items: [
                 {
-                    title: 'History',
-                    url: '#',
+                    title: 'Users',
+                    url: '/dashboard/users',
                 },
                 {
-                    title: 'Starred',
-                    url: '#',
+                    title: 'Roles',
+                    url: '/dashboard/roles',
                 },
                 {
-                    title: 'Settings',
-                    url: '#',
+                    title: 'Permissions',
+                    url: '/dashboard/permissions',
                 },
             ],
         },

@@ -14,7 +14,7 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
-    public function index(Request $request): Response
+    public function index(): Response
     {
         $users = User::paginate(perPage: 10, columns: ['id', 'name', 'email', 'address_1', 'address_2']);
 

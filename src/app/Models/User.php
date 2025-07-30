@@ -45,4 +45,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function roles()
+    {
+        return $this->hasMany(Role::class, 'created_by');
+    }
+
+    public function permissions()
+    {
+        return $this->hasMany(Permission::class, 'updated_by');
+    }
 }
