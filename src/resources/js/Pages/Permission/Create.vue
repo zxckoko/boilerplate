@@ -10,7 +10,7 @@
 
         <div class="max-w-full m-8">
             <Form @submit="form.post(route('permissions.store'))" class="flex flex-col space-y-4 max-w-1/3 my-2">
-                <InputText type="text" placeholder="Role" v-model="form.name" autofocus />
+                <InputText type="text" placeholder="Permission" v-model="form.name" autofocus />
                 <Message v-if="form.errors?.message" severity="error" variant="simple">{{ form.errors.message }}</Message>
 
                 <Button type="submit" severity="primary" label="Submit" />
