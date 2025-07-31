@@ -8,6 +8,7 @@
                 <span class="text-indigo-400 font-medium">//</span>
                 {{ form.name }}
             </h1>
+            <ModelTimestamps :modelObject="permission" />
         </template>
 
         <div class="max-w-full m-8 mb-0 pb-8">
@@ -42,6 +43,7 @@ import FloatLabel from "primevue/floatlabel";
 import Divider from 'primevue/divider';
 
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";
+import ModelTimestamps from "@/components/common/ModelTimestamps.vue";
 
 const props = defineProps({
     permission: Object

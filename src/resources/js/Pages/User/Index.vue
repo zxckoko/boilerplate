@@ -21,9 +21,10 @@
                 <tr class="text-left font-bold">
                     <th class="border border-gray-600 p-4">Name</th>
                     <th class="border border-gray-600 p-4">Email</th>
+                    <th class="border border-gray-600 p-4">Roles</th>
                     <th class="border border-gray-600 p-4">Address #1</th>
-                    <th class="border border-gray-600 p-4">Address #2</th>
-                    <th class="border border-gray-600 p-4">Created By</th>
+<!--                    <th class="border border-gray-600 p-4">Address #2</th>-->
+<!--                    <th class="border border-gray-600 p-4">Created By</th>-->
                     <th class="border border-gray-600 p-4" colspan="2">Updated By</th>
                 </tr>
                 </thead>
@@ -40,20 +41,29 @@
                         </Link>
                     </td>
                     <td class="border-t">
+                        <Link class="flex flex-wrap items-center px-6 py-4 focus:text-indigo-500" :href="route('users.edit', user.id)">
+                            <div v-for="role in user.roles">
+                                <Badge v-if="role.name === administratorName" severity="danger"  class="m-1">{{ role.name }}</Badge>
+                                <Badge v-else-if="role.name === guestName" severity="success"  class="m-1">{{ role.name }}</Badge>
+                                <Badge v-else severity="info"  class="m-1">{{ role.name }}</Badge>
+                            </div>
+                        </Link>
+                    </td>
+                    <td class="border-t">
                         <Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">
                             {{ user.address_1 }}
                         </Link>
                     </td>
-                    <td class="border-t">
-                        <Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">
-                            {{ user.address_2 }}
-                        </Link>
-                    </td>
-                    <td class="border-t">
-                        <Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">
-                            {{ user.created_by.name + " @ " + user.created_at_formatted }}
-                        </Link>
-                    </td>
+<!--                    <td class="border-t">-->
+<!--                        <Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">-->
+<!--                            {{ user.address_2 }}-->
+<!--                        </Link>-->
+<!--                    </td>-->
+<!--                    <td class="border-t">-->
+<!--                        <Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">-->
+<!--                            {{ user.created_by.name + " @ " + user.created_at_formatted }}-->
+<!--                        </Link>-->
+<!--                    </td>-->
                     <td class="border-t">
                         <Link class="flex items-center px-6 py-4" :href="route('users.edit', user.id)" tabindex="-1">
                             {{ user.updated_by.name + " @ " + user.updated_at_formatted }}
@@ -82,6 +92,7 @@ import { Head, Link } from "@inertiajs/vue3";
 import { ChevronsRight } from "lucide-vue-next";
 import Message from "primevue/message";
 import Button from "primevue/button";
+import Badge from "primevue/badge";
 </script>
 
 <script lang="ts">
@@ -94,4 +105,8 @@ export default {
         users: Object,
     },
 }
+
+// MD5:3858f62230ac3c915f300c664312c63f
+const administratorName = 'Administrator';
+const guestName = 'Guest';
 </script>

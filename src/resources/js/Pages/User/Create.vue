@@ -29,6 +29,16 @@
                     <label for="address_2">Address #2</label>
                 </FloatLabel>
 
+                <fieldset class="border border-2 p-2">
+                    <legend class="border text-xs text-gray-400 py-1 px-1 mb-2 ml-2">Roles</legend>
+                    <div class="w-full grid grid-cols-2 items-center gap-4">
+                        <div v-for="role of roles" :key="role" class="flex gap-2">
+                            <Checkbox v-model="form.roles" :inputId="role" :value="role" />
+                            <label class="cursor-pointer" :for="role">{{ role }}</label>
+                        </div>
+                    </div>
+                </fieldset>
+
                 <Message v-if="form.errors?.message" severity="error" variant="simple">{{ form.errors.message }}</Message>
 
                 <Button type="submit" severity="primary" icon="pi pi-save" label="Submit" />
@@ -45,11 +55,17 @@ import Message from 'primevue/message';
 import InputText from 'primevue/inputtext';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
+import Checkbox from "primevue/checkbox";
+
+const props = defineProps({
+    roles: Array,
+});
 
 const form = useForm({
     name: null,
     email: null,
     address_1: null,
     address_2: null,
+    roles: [],
 });
 </script>

@@ -74,11 +74,11 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        $role = Role::find($id);
+        $role = Role::with(['created_by', 'updated_by'])->find($id);
 
         return Inertia::render('Role/Edit', [
             'role' => $role,
-            'rolePermissions' => $role->permissions->pluck('name')->all(),
+            'rolePermissions' => $role->permissions()->pluck('name')->all(),
             'permissions' => Permission::pluck('name')->all(),
         ]);
     }

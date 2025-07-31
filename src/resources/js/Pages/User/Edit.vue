@@ -8,6 +8,7 @@
                 <span class="text-indigo-400 font-medium">//</span>
                 {{ form.name }}
             </h1>
+            <ModelTimestamps :modelObject="user" />
         </template>
 
         <div class="max-w-full m-8 mb-0 pb-8">
@@ -28,6 +29,16 @@
                     <InputText class="w-full" id="address_2" type="text" v-model="form.address_2" />
                     <label for="address_2">Address #2</label>
                 </FloatLabel>
+
+                <fieldset class="border border-2 p-2">
+                    <legend class="border text-xs text-gray-400 py-1 px-1 mb-2 ml-2">Roles</legend>
+                    <div class="w-full grid grid-cols-2 items-center gap-4">
+                        <div v-for="role of roles" :key="role" class="flex gap-2">
+                            <Checkbox v-model="form.roles" :inputId="role" :value="role" />
+                            <label class="cursor-pointer" :for="role">{{ role }}</label>
+                        </div>
+                    </div>
+                </fieldset>
 
                 <Message v-if="form.errors?.message" severity="error" variant="simple">{{ form.errors.message }}</Message>
 
@@ -52,11 +63,15 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import FloatLabel from 'primevue/floatlabel';
 import Divider from 'primevue/divider';
+import Checkbox from "primevue/checkbox";
 
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";
+import ModelTimestamps from "@/components/common/ModelTimestamps.vue";
 
 const props = defineProps({
     user: Object,
+    userRoles: Array,
+    roles: Array,
 });
 
 const form = useForm({
@@ -64,5 +79,6 @@ const form = useForm({
     email: props.user.email,
     address_1: props.user.address_1,
     address_2: props.user.address_2,
+    roles: props.userRoles || [],
 });
 </script>

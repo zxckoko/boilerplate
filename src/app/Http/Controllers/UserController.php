@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User
-            ::with(['created_by', 'updated_by'])
+            ::with(['created_by', 'updated_by', 'roles'])
             ->latest('updated_at')
             ->paginate(10);
 
@@ -29,7 +31,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('User/Create');
+        return Inertia::render('User/Create', [
+            'roles' => Role::pluck('name')->all(),
+        ]);
     }
 
     /**
@@ -41,6 +45,7 @@ class UserController extends Controller
             $request->validate([
                 'name' => 'required|string|min:3|max:255',
                 'email' => 'required|string|lowercase|email|min:3|max:255|unique:users,email',
+                'roles' => 'required|array',
             ]);
 
             $user = User::create([
@@ -50,6 +55,8 @@ class UserController extends Controller
                 'created_by' => auth()->user()->id,
                 'updated_by' => auth()->user()->id,
             ]);
+
+            $user->syncRoles($request->input('roles'));
         } catch (\Exception $exception) {
             return back()->withErrors(['message' => $exception->getMessage()]);
         }
@@ -72,10 +79,14 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::find($id);
+        $user = User::with(['created_by', 'updated_by'])->find($id);
+        $userRoles = $user->roles()->pluck('name')->all();
+        $roles = Role::pluck('name')->all();
 
         return Inertia::render('User/Edit', [
             'user' => $user,
+            'userRoles' => $userRoles,
+            'roles' => $roles,
         ]);
     }
 
@@ -88,6 +99,7 @@ class UserController extends Controller
             $request->validate([
                 'name' => 'required|string|min:3|max:255',
                 'email' => 'required|string|lowercase|email|min:3|max:255|unique:users,email,' . $id,
+                'roles' => 'required|array',
             ]);
 
             $user = User::find($id);
@@ -98,6 +110,8 @@ class UserController extends Controller
             $user->updated_by = auth()->user()->id;
             $user->updated_at = now();
             $user->save();
+
+            $user->syncRoles($request->input('roles'));
         } catch (\Exception $exception) {
             return back()->withErrors(['message' => $exception->getMessage()]);
         }
