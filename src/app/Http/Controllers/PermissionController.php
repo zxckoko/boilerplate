@@ -82,7 +82,7 @@ class PermissionController extends Controller implements HasMiddleware
     public function edit(string $id)
     {
         return Inertia::render('Permission/Edit', [
-            'permission' => Permission::with(['created_by', 'updated_by'])->find($id),
+            'permission' => Permission::with(['created_by', 'updated_by'])->findOrFail($id),
         ]);
     }
 

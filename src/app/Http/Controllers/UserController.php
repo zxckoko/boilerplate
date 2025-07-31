@@ -96,7 +96,7 @@ class UserController extends Controller implements HasMiddleware
      */
     public function edit(string $id)
     {
-        $user = User::with(['created_by', 'updated_by'])->find($id);
+        $user = User::with(['created_by', 'updated_by'])->findOrFail($id);
         $userRoles = $user->roles()->pluck('name')->all();
         $roles = Role::pluck('name')->all();
 

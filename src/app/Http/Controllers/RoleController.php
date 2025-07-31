@@ -86,7 +86,7 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function edit(string $id)
     {
-        $role = Role::with(['created_by', 'updated_by'])->find($id);
+        $role = Role::with(['created_by', 'updated_by'])->findOrFail($id);
 
         return Inertia::render('Role/Edit', [
             'role' => $role,
