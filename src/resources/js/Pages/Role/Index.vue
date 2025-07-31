@@ -9,7 +9,7 @@
         <div class="max-w-full m-8 mb-0 pb-8">
             <div class="flex items-center justify-between mb-6">
                 <p>Search and Filter placeholder</p>
-                <Button as="a" type="button" severity="primary" label="Create Role" :href="route('roles.create')" />
+                <Button v-if="can('roles.create')" as="a" type="button" severity="primary" label="Create Role" :href="route('roles.create')" />
             </div>
 
             <Message v-if="$page.props.flash.message" :life=3000 severity="success" icon="pi pi-check" class="mb-6">
@@ -28,12 +28,13 @@
                 <tbody class="bg-white dark:bg-gray-700">
                     <tr v-for="role in roles.data" :key="role.id" class="hover:bg-gray-900 dark:hover:bg-gray-900 focus-within:bg-gray-900">
                         <td class="border-t">
-                            <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="route('roles.edit', role.id)">
+                            <Link v-if="can('roles.edit')" class="flex items-center p-2 focus:text-indigo-500" :href="route('roles.edit', role.id)">
                                 {{ role.name }}
                             </Link>
+                            <span v-else class="flex items-center p-2">{{ role.name }}</span>
                         </td>
                         <td class="border-t">
-                            <Link class="flex flex-wrap items-center px-6 py-4 focus:text-indigo-500" :href="route('roles.edit', role.id)">
+                            <Link v-if="can('roles.edit')" class="flex flex-wrap items-center p-2" :href="route('roles.edit', role.id)" tabindex="-1">
                                 <Badge
                                     v-for="permission in role.permissions"
                                     severity="info"
@@ -42,21 +43,39 @@
                                     {{ permission.name }}
                                 </Badge>
                             </Link>
+                            <div v-else class="flex flex-wrap items-center p-2">
+                                <Badge
+                                    v-for="permission in role.permissions"
+                                    severity="info"
+                                    class="m-1"
+                                >
+                                    {{ permission.name }}
+                                </Badge>
+                            </div>
                         </td>
                         <td class="border-t">
-                            <Link class="flex items-center px-6 py-4" :href="route('roles.edit', role.id)" tabindex="-1">
+                            <Link v-if="can('roles.edit')" class="flex items-center p-2" :href="route('roles.edit', role.id)" tabindex="-1">
                                 {{ role.created_by.name + " @ " + role.created_at_formatted }}
                             </Link>
+                            <span v-else class="flex items-center p-2">
+                                {{ role.created_by.name + " @ " + role.created_at_formatted }}
+                            </span>
                         </td>
                         <td class="border-t">
-                            <Link class="flex items-center px-6 py-4" :href="route('roles.edit', role.id)" tabindex="-1">
+                            <Link v-if="can('roles.edit')" class="flex items-center p-2" :href="route('roles.edit', role.id)" tabindex="-1">
                                 {{ role.updated_by.name + " @ " + role.updated_at_formatted }}
                             </Link>
+                            <span v-else class="flex items-center p-2">
+                                {{ role.updated_by.name + " @ " + role.updated_at_formatted }}
+                            </span>
                         </td>
                         <td class="border-t">
-                            <Link class="flex items-center px-4" :href="route('roles.edit', role.id)" tabindex="-1">
-                                <ChevronsRight class="block w-6 h-6 fill-gray-400" />
+                            <Link v-if="can('roles.edit')" class="flex items-center p-2" :href="route('roles.edit', role.id)" tabindex="-1">
+                                <i class="pi pi-angle-double-right w-8 h-8 text-sky-400"></i>
                             </Link>
+                            <span v-else class="flex items-center p-2">
+                                <i class="pi pi-ban w-8 h-8 text-secondary"></i>
+                            </span>
                         </td>
                     </tr>
                     <tr v-if="roles.data.length === 0">
@@ -72,12 +91,13 @@
 
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Link } from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
 import { ChevronsRight } from "lucide-vue-next";
 import Message from "primevue/message";
 import Badge from 'primevue/badge';
 import Pagination from "@/components/common/Pagination.vue";
 import Button from "primevue/button";
+import { can } from "@/lib/can";
 </script>
 
 <script lang="ts">

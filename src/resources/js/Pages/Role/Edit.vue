@@ -18,24 +18,32 @@
                     <label for="name">Name</label>
                 </FloatLabel>
 
-                <div class="w-full grid grid-cols-2 items-center gap-4">
-                    <div v-for="permission of permissions" :key="permission" class="flex gap-2">
-                        <Checkbox v-model="form.permissions" :inputId="permission" :value="permission" />
-                        <label class="cursor-pointer" :for="permission">{{ permission }}</label>
+                <fieldset class="border border-2 p-2" :disabled="canFoobarData">
+                    <legend class="border text-xs text-gray-400 py-1 px-1 mb-2 ml-2">
+                        <div class="flex items-center gap-2">
+                            <span>Permissions</span><i v-if="canFoobarData" class="pi pi-ban text-secondary"></i>
+                        </div>
+                    </legend>
+                    <div class="w-full grid grid-cols-2 items-center gap-4">
+                        <div v-for="permission of permissions" :key="permission" class="flex gap-2">
+                            <Checkbox v-model="form.permissions" :inputId="permission" :value="permission" />
+                            <label class="cursor-pointer" :for="permission">{{ permission }}</label>
+                        </div>
                     </div>
-                </div>
+                </fieldset>
 
                 <Message v-if="form.errors?.message" severity="error" variant="simple">{{ form.errors.message }}</Message>
 
                 <Button type="submit" severity="primary" icon="pi pi-save" label="Submit" />
             </Form>
 
-            <div class="w-1/3">
-                <Divider>//</Divider>
+            <div v-if="can('roles.destroy')">
+                <div class="w-1/3">
+                    <Divider>//</Divider>
+                </div>
+
+                <ConfirmDeleteDialog :record="route('roles.destroy', role.id)"></ConfirmDeleteDialog>
             </div>
-
-            <ConfirmDeleteDialog :record="route('roles.destroy', role.id)"></ConfirmDeleteDialog>
-
         </div>
     </AuthenticatedLayout>
 </template>
@@ -53,6 +61,9 @@ import Checkbox from "primevue/checkbox";
 
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";
 import ModelTimestamps from "@/components/common/ModelTimestamps.vue";
+import { can } from "@/lib/can";
+
+const canFoobarData = ! can('foobar');
 
 const props = defineProps({
     role: Object,

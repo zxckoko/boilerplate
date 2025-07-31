@@ -30,33 +30,31 @@
                             <Link v-if="can('permissions.edit')" class="flex items-center p-2 focus:text-indigo-500" :href="route('permissions.edit', permission.id)">
                                 {{ permission.name }}
                             </Link>
-                            <span v-else class="flex items-center p-2">
-                            {{ permission.name }}
-                        </span>
+                            <span v-else class="flex items-center p-2">{{ permission.name }}</span>
                         </td>
                         <td class="border-t">
                             <Link v-if="can('permissions.edit')" class="flex items-center p-2" :href="route('permissions.edit', permission.id)" tabindex="-1">
                                 {{ permission.created_by.name + " @ " + permission.created_at_formatted }}
                             </Link>
                             <span v-else class="flex items-center p-2">
-                            {{ permission.created_by.name + " @ " + permission.created_at_formatted }}
-                        </span>
+                                {{ permission.created_by.name + " @ " + permission.created_at_formatted }}
+                            </span>
                         </td>
                         <td class="border-t">
                             <Link v-if="can('permissions.edit')" class="flex items-center p-2" :href="route('permissions.edit', permission.id)" tabindex="-1">
                                 {{ permission.updated_by.name + " @ " + permission.updated_at_formatted }}
                             </Link>
                             <span v-else class="flex items-center p-2">
-                            {{ permission.updated_by.name + " @ " + permission.updated_at_formatted }}
-                        </span>
+                                {{ permission.updated_by.name + " @ " + permission.updated_at_formatted }}
+                            </span>
                         </td>
                         <td class="border-t">
                             <Link v-if="can('permissions.edit')" class="flex items-center p-2" :href="route('permissions.edit', permission.id)" tabindex="-1">
                                 <i class="pi pi-angle-double-right w-8 h-8 text-sky-400"></i>
                             </Link>
                             <span v-else class="flex items-center p-2">
-                            <i class="pi pi-ban w-8 h-8 text-secondary"></i>
-                        </span>
+                                <i class="pi pi-ban w-8 h-8 text-secondary"></i>
+                            </span>
                         </td>
                     </tr>
                     <tr v-if="permissions.data.length === 0">

@@ -75,13 +75,14 @@ import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";
 import ModelTimestamps from "@/components/common/ModelTimestamps.vue";
 import { can } from "@/lib/can";
 
+const canFoobarData = ! can('foobar');
+
 const props = defineProps({
     user: Object,
     userRoles: Array,
     roles: Array,
 });
 
-const canFoobarData = ! can('foobar');
 const form = useForm({
     name: props.user.name,
     email: props.user.email,

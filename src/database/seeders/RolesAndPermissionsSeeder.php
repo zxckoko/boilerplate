@@ -18,6 +18,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // MD5:3858f62230ac3c915f300c664312c63f
         $defaultRoles = ['Guest', 'Administrator'];
         $defaultPermissions['Guest'] = [
+            // MD5:11e4094c95d46ccb8cc60dd9bb905742
             'users.index',
             'roles.index',
             'permissions.index',
