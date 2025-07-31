@@ -125,12 +125,27 @@ class PermissionController extends Controller implements HasMiddleware
         $permission->save();
 
         if ($permission !== 0) {
+            $this->revokePermissionTo($permission);
+
             return to_route('permissions.index')
                 ->with('message',
                     sprintf($this->successMessage, class_basename($permission), $permission->name, 'deleted')
                 );
         } else {
             return response([], 404);
+        }
+    }
+
+    /*
+     * Detach deleted permission from all Role models.
+     * This has to be done manually based on experience.
+     * */
+    private function revokePermissionTo (Permission $permission): void
+    {
+        $roles = \App\Models\Role::all();
+
+        foreach ($roles as $role) {
+            $role->revokePermissionTo($permission);
         }
     }
 }
