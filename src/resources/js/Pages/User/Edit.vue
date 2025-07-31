@@ -30,8 +30,12 @@
                     <label for="address_2">Address #2</label>
                 </FloatLabel>
 
-                <fieldset class="border border-2 p-2">
-                    <legend class="border text-xs text-gray-400 py-1 px-1 mb-2 ml-2">Roles</legend>
+                <fieldset class="border border-2 p-2" :disabled="canFoobarData">
+                    <legend class="border text-xs text-gray-400 py-1 px-1 mb-2 ml-2">
+                        <div class="flex items-center gap-2">
+                            <span>Roles</span><i v-if="canFoobarData" class="pi pi-ban text-secondary"></i>
+                        </div>
+                    </legend>
                     <div class="w-full grid grid-cols-2 items-center gap-4">
                         <div v-for="role of roles" :key="role" class="flex gap-2">
                             <Checkbox v-model="form.roles" :inputId="role" :value="role" />
@@ -45,11 +49,13 @@
                 <Button type="submit" severity="primary" icon="pi pi-save" label="Submit" />
             </Form>
 
-            <div class="w-1/3">
-                <Divider>//</Divider>
-            </div>
+            <div v-if="can('users.destroy')">
+                <div class="w-1/3">
+                    <Divider>//</Divider>
+                </div>
 
-            <ConfirmDeleteDialog :record="route('users.destroy', user.id)"></ConfirmDeleteDialog>
+                <ConfirmDeleteDialog :record="route('users.destroy', user.id)"></ConfirmDeleteDialog>
+            </div>
         </div>
     </AuthenticatedLayout>
 </template>
@@ -67,6 +73,7 @@ import Checkbox from "primevue/checkbox";
 
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";
 import ModelTimestamps from "@/components/common/ModelTimestamps.vue";
+import { can } from "@/lib/can";
 
 const props = defineProps({
     user: Object,
@@ -74,6 +81,7 @@ const props = defineProps({
     roles: Array,
 });
 
+const canFoobarData = ! can('foobar');
 const form = useForm({
     name: props.user.name,
     email: props.user.email,

@@ -6,11 +6,28 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
+    /*
+     * EITHER: https://github.com/spatie/laravel-permission/blob/main/docs/basic-usage/middleware.md#controllers
+     * OR: https://spatie.be/docs/laravel-permission/v6/best-practices/using-policies
+     * (OR)
+     * */
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:users.index|users.show', only: ['index', 'show']),
+            new Middleware('permission:users.create', only: ['create', 'store']),
+            new Middleware('permission:users.edit', only: ['edit', 'update']),
+            new Middleware('permission:users.destroy', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -71,7 +88,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        dd(69);
     }
 
     /**

@@ -29,8 +29,12 @@
                     <label for="address_2">Address #2</label>
                 </FloatLabel>
 
-                <fieldset class="border border-2 p-2">
-                    <legend class="border text-xs text-gray-400 py-1 px-1 mb-2 ml-2">Roles</legend>
+                <fieldset class="border border-2 p-2" :disabled="canFoobarData">
+                    <legend class="border text-xs text-gray-400 py-1 px-1 mb-2 ml-2">
+                        <div class="flex items-center gap-2">
+                            <span>Roles</span><i v-if="canFoobarData" class="pi pi-ban text-secondary"></i>
+                        </div>
+                    </legend>
                     <div class="w-full grid grid-cols-2 items-center gap-4">
                         <div v-for="role of roles" :key="role" class="flex gap-2">
                             <Checkbox v-model="form.roles" :inputId="role" :value="role" />
@@ -56,16 +60,18 @@ import InputText from 'primevue/inputtext';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
 import Checkbox from "primevue/checkbox";
+import { can } from "@/lib/can";
 
 const props = defineProps({
     roles: Array,
 });
 
+const canFoobarData = ! can('foobar');
 const form = useForm({
     name: null,
     email: null,
     address_1: null,
     address_2: null,
-    roles: [],
+    roles: canFoobarData ? ['Guest'] : [], // MD5:3858f62230ac3c915f300c664312c63f
 });
 </script>

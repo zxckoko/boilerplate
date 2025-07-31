@@ -37,8 +37,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'permissions.destroy',
         ];
 
-        // MD5:da7df3456f4911e5e6fffc614f82aa7e
-        setPermissionsTeamId(69);
         $this->initRolesAndPermissions($defaultRoles, $defaultPermissions);
         $this->initUsers($defaultRoles);
     }
