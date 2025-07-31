@@ -23,11 +23,13 @@
                 <Button type="submit" severity="primary" icon="pi pi-save" label="Submit" />
             </Form>
 
-            <div class="w-1/3">
-                <Divider>//</Divider>
-            </div>
+            <div v-if="can('permissions.destroy')">
+                <div class="w-1/3">
+                    <Divider>//</Divider>
+                </div>
 
-            <ConfirmDeleteDialog :record="route('permissions.destroy', permission.id)"></ConfirmDeleteDialog>
+                <ConfirmDeleteDialog :record="route('permissions.destroy', permission.id)"></ConfirmDeleteDialog>
+            </div>
         </div>
     </AuthenticatedLayout>
 </template>
@@ -44,6 +46,7 @@ import Divider from 'primevue/divider';
 
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";
 import ModelTimestamps from "@/components/common/ModelTimestamps.vue";
+import { can } from "@/lib/can";
 
 const props = defineProps({
     permission: Object
