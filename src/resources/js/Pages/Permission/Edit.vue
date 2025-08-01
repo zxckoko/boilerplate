@@ -30,6 +30,8 @@
 
                 <ConfirmDeleteDialog :record="route('permissions.destroy', permission.id)"></ConfirmDeleteDialog>
             </div>
+
+            <ActivityLog :activities="activities" />
         </div>
     </AuthenticatedLayout>
 </template>
@@ -46,10 +48,12 @@ import Divider from 'primevue/divider';
 
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";
 import ModelTimestamps from "@/components/common/ModelTimestamps.vue";
+import ActivityLog from "@/components/common/ActivityLog.vue";
 import { can } from "@/lib/can";
 
 const props = defineProps({
-    permission: Object
+    permission: Object,
+    activities: Object,
 });
 
 const form = useForm({

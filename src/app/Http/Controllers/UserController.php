@@ -96,14 +96,16 @@ class UserController extends Controller implements HasMiddleware
      */
     public function edit(string $id)
     {
-        $user = User::with(['created_by', 'updated_by'])->findOrFail($id);
+        $user = User::withTrashed()->with(['created_by', 'updated_by'])->findOrFail($id);
         $userRoles = $user->roles()->pluck('name')->all();
         $roles = Role::pluck('name')->all();
+        $activities = $this->getActivityLogs($id, $user::class);
 
         return Inertia::render('User/Edit', [
             'user' => $user,
             'userRoles' => $userRoles,
             'roles' => $roles,
+            'activities' => $activities,
         ]);
     }
 

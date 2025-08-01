@@ -86,12 +86,14 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function edit(string $id)
     {
-        $role = Role::with(['created_by', 'updated_by'])->findOrFail($id);
+        $role = Role::withTrashed()->with(['created_by', 'updated_by'])->findOrFail($id);
+        $activities = $this->getActivityLogs($id, $role::class);
 
         return Inertia::render('Role/Edit', [
             'role' => $role,
             'rolePermissions' => $role->permissions()->pluck('name')->all(),
             'permissions' => Permission::pluck('name')->all(),
+            'activities' => $activities,
         ]);
     }
 

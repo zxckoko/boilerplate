@@ -81,8 +81,12 @@ class PermissionController extends Controller implements HasMiddleware
      */
     public function edit(string $id)
     {
+        $permission = Permission::withTrashed()->with(['created_by', 'updated_by'])->findOrFail($id);
+        $activities = $this->getActivityLogs($id, $permission::class);
+
         return Inertia::render('Permission/Edit', [
-            'permission' => Permission::with(['created_by', 'updated_by'])->findOrFail($id),
+            'permission' => $permission,
+            'activities' => $activities,
         ]);
     }
 

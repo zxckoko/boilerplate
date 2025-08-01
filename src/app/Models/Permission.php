@@ -2,18 +2,28 @@
 
 namespace App\Models;
 
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Models\Permission as BasePermission;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Permission extends BasePermission
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
 
     protected $appends = [
         'created_at_formatted',
         'updated_at_formatted',
         'deleted_at_formatted',
     ];
+
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     public function created_by()
     {

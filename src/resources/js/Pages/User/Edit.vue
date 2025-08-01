@@ -56,6 +56,8 @@
 
                 <ConfirmDeleteDialog :record="route('users.destroy', user.id)"></ConfirmDeleteDialog>
             </div>
+
+            <ActivityLog :activities="activities" />
         </div>
     </AuthenticatedLayout>
 </template>
@@ -73,6 +75,7 @@ import Checkbox from "primevue/checkbox";
 
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";
 import ModelTimestamps from "@/components/common/ModelTimestamps.vue";
+import ActivityLog from "@/components/common/ActivityLog.vue";
 import { can } from "@/lib/can";
 
 const canFoobarData = ! can('foobar');
@@ -81,6 +84,7 @@ const props = defineProps({
     user: Object,
     userRoles: Array,
     roles: Array,
+    activities: Object,
 });
 
 const form = useForm({
