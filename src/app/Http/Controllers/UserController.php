@@ -79,8 +79,7 @@ class UserController extends Controller implements HasMiddleware
             return back()->withErrors(['message' => $exception->getMessage()]);
         }
 
-        return to_route('users.index')
-            ->with('message', sprintf($this->successMessage, class_basename($user), $user->name, 'created'));
+        return $this->getSuccessMessage('users.index', $user, $user->name, 'created');
 
     }
 
@@ -136,8 +135,7 @@ class UserController extends Controller implements HasMiddleware
             return back()->withErrors(['message' => $exception->getMessage()]);
         }
 
-        return to_route('users.index')
-            ->with('message', sprintf($this->successMessage, class_basename($user), $user->name, 'updated'));
+        return $this->getSuccessMessage('users.index', $user, $user->name, 'updated');
     }
 
     /**
@@ -152,8 +150,7 @@ class UserController extends Controller implements HasMiddleware
         $user->delete();
 
         if ($user !== 0) {
-            return to_route('users.index')
-                ->with('message', sprintf($this->successMessage, class_basename($user), $user->name, 'deleted'));
+            return $this->getSuccessMessage('users.index', $user, $user->name, 'deleted');
         } else {
             return response([], 404);
         }

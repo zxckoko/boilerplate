@@ -70,8 +70,7 @@ class RoleController extends Controller implements HasMiddleware
             return back()->withErrors(['message' => $exception->getMessage()]);
         }
 
-        return to_route('roles.index')
-            ->with('message', sprintf($this->successMessage, class_basename($role), $role->name, 'created'));
+        return $this->getSuccessMessage('roles.index', $role, $role->name, 'created');
     }
 
     /**
@@ -125,8 +124,7 @@ class RoleController extends Controller implements HasMiddleware
             return back()->withErrors(['message' => $exception->getMessage()]);
         }
 
-        return to_route('roles.index')
-            ->with('message', sprintf($this->successMessage, class_basename($role), $role->name, 'updated'));
+        return $this->getSuccessMessage('roles.index', $role, $role->name, 'updated');
     }
 
     /**
@@ -141,8 +139,7 @@ class RoleController extends Controller implements HasMiddleware
         $role->delete();
 
         if ($role !== 0) {
-            return to_route('roles.index')
-                ->with('message', sprintf($this->successMessage, class_basename($role), $role->name, 'deleted'));
+            return $this->getSuccessMessage('roles.index', $role, $role->name, 'deleted');
         } else {
             return response([], 404);
         }

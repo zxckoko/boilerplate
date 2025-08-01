@@ -64,10 +64,7 @@ class PermissionController extends Controller implements HasMiddleware
             return back()->withErrors(['message' => $exception->getMessage()]);
         }
 
-        return to_route('permissions.index')
-            ->with('message',
-                sprintf($this->successMessage, class_basename($permission), $permission->name, 'created')
-            );
+        return $this->getSuccessMessage('permissions.index', $permission, $permission->name, 'created');
     }
 
     /**
@@ -116,8 +113,7 @@ class PermissionController extends Controller implements HasMiddleware
             return back()->withErrors(['message' => $exception->getMessage()]);
         }
 
-        return to_route('permissions.index')
-            ->with('message', sprintf($this->successMessage, class_basename($permission), $permission->name, 'updated'));
+        return $this->getSuccessMessage('permissions.index', $permission, $permission->name, 'updated');
     }
 
     /**
@@ -134,10 +130,7 @@ class PermissionController extends Controller implements HasMiddleware
         if ($permission !== 0) {
             $this->revokePermissionTo($permission);
 
-            return to_route('permissions.index')
-                ->with('message',
-                    sprintf($this->successMessage, class_basename($permission), $permission->name, 'deleted')
-                );
+            return $this->getSuccessMessage('permissions.index', $permission, $permission->name, 'deleted');
         } else {
             return response([], 404);
         }
