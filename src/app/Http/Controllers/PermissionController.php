@@ -17,6 +17,7 @@ class PermissionController extends Controller implements HasMiddleware
             new Middleware('permission:permissions.create', only: ['create', 'store']),
             new Middleware('permission:permissions.edit', only: ['edit', 'update']),
             new Middleware('permission:permissions.destroy', only: ['destroy']),
+            new Middleware('permission:restoreRecord', only: ['restore']),
         ];
     }
 
@@ -128,6 +129,7 @@ class PermissionController extends Controller implements HasMiddleware
         $permission->deleted_by = auth()->user()->id;
         $permission->deleted_at = now();
         $permission->save();
+        $permission->delete();
 
         if ($permission !== 0) {
             $this->revokePermissionTo($permission);
@@ -139,6 +141,13 @@ class PermissionController extends Controller implements HasMiddleware
         } else {
             return response([], 404);
         }
+    }
+
+    public function restore(Permission $permission)
+    {
+        $permission->restore();
+
+        return $this->getSuccessMessage('permissions.index', $permission, $permission->name, 'restored');
     }
 
     /*

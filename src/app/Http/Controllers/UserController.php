@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -25,6 +24,7 @@ class UserController extends Controller implements HasMiddleware
             new Middleware('permission:users.create', only: ['create', 'store']),
             new Middleware('permission:users.edit', only: ['edit', 'update']),
             new Middleware('permission:users.destroy', only: ['destroy']),
+            new Middleware('permission:restoreRecord', only: ['restore']),
         ];
     }
 
@@ -149,6 +149,7 @@ class UserController extends Controller implements HasMiddleware
         $user->deleted_by = auth()->user()->id;
         $user->deleted_at = now();
         $user->save();
+        $user->delete();
 
         if ($user !== 0) {
             return to_route('users.index')
@@ -156,5 +157,12 @@ class UserController extends Controller implements HasMiddleware
         } else {
             return response([], 404);
         }
+    }
+
+    public function restore(User $user)
+    {
+        $user->restore();
+
+        return $this->getSuccessMessage('users.index', $user, $user->name, 'restored');
     }
 }

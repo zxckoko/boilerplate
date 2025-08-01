@@ -6,17 +6,17 @@ use App\Models\Packages\Activity;
 
 abstract class Controller
 {
-    protected $successMessage = '%s \'%s\' %s successfully.';
-    protected $infoMessage = '';
-    protected $warningMessage = '';
-    protected $errorMessage = '';
+    protected string $successMessage = '%s \'%s\' %s successfully.';
+    protected string $infoMessage = '';
+    protected string $warningMessage = '';
+    protected string $errorMessage = '';
 
-    public function foobar()
+    protected function foobar()
     {
         return 'foobar';
     }
 
-    public function getActivityLogs($subjectId, $subjectType)
+    protected function getActivityLogs($subjectId, $subjectType)
     {
         return Activity::query()
             ->with(['created_by'])
@@ -25,5 +25,11 @@ abstract class Controller
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
+    }
+
+    protected function getSuccessMessage($route, $modelName, $recordName, $event)
+    {
+        return to_route($route)
+            ->with('message', sprintf($this->successMessage, class_basename($modelName), $recordName, $event));
     }
 }

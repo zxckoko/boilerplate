@@ -27,8 +27,25 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])
     ->prefix('dashboard')
     ->group(function () {
+        Route::group(['prefix' => 'permissions', 'as' => 'permissions.'], function () {
+            Route::patch('/{permission}/restore', [PermissionController::class, 'restore'])
+                ->name('restore')
+                ->withTrashed();
+        });
         Route::resource('permissions', PermissionController::class);
+
+        Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {
+            Route::patch('/{role}/restore', [RoleController::class, 'restore'])
+                ->name('restore')
+                ->withTrashed();
+        });
         Route::resource('roles', RoleController::class);
+
+        Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+            Route::patch('/{user}/restore', [UserController::class, 'restore'])
+                ->name('restore')
+                ->withTrashed();
+        });
         Route::resource('users', UserController::class);
     });
 

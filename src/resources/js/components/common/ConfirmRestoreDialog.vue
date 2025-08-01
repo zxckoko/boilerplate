@@ -2,8 +2,8 @@
     <div class="w-1/3">
         <Divider>//</Divider>
     </div>
-    <Button @click="destroy(record)" type="button" icon="pi pi-exclamation-circle" severity="danger" label="Delete"
-            variant="simple" class="w-1/3" outlined />
+    <Button @click="restore(record)" type="button" icon="pi pi-undo" severity="warn" label="Restore"
+            variant="simple" class="w-1/3" />
     <ConfirmDialog></ConfirmDialog>
 </template>
 <script lang="ts" setup>
@@ -18,16 +18,16 @@ const props = defineProps({
     record: String
 });
 
-const destroy = (record) => {
+const restore = (record) => {
     confirm.require({
         message: 'Are you sure you want to proceed?',
         header: 'Confirmation',
         accept: () => {
-            router.delete(record)
+            router.patch(record)
         },
-        icon: 'pi pi-exclamation-circle',
+        icon: 'pi pi-undo',
         acceptIcon: 'pi pi-check',
-        acceptClass: 'p-button-danger',
+        acceptClass: 'p-button-warn',
         rejectClass: 'p-button-secondary',
     });
 }

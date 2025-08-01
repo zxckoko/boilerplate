@@ -37,13 +37,15 @@
                 <Button type="submit" severity="primary" icon="pi pi-save" label="Submit" />
             </Form>
 
-            <div v-if="can('roles.destroy')">
-                <div class="w-1/3">
-                    <Divider>//</Divider>
-                </div>
+            <ConfirmDeleteDialog
+                v-if="role.deleted_at === null && can('roles.destroy')"
+                :record="route('roles.destroy', role.id)"
+            />
 
-                <ConfirmDeleteDialog :record="route('roles.destroy', role.id)"></ConfirmDeleteDialog>
-            </div>
+            <ConfirmRestoreDialog
+                v-if="role.deleted_at !== null && can('restoreRecord')"
+                :record="route('roles.restore', role.id)"
+            />
 
             <ActivityLog :activities="activities" />
         </div>
@@ -58,10 +60,10 @@ import Message from 'primevue/message';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import FloatLabel from 'primevue/floatlabel';
-import Divider from 'primevue/divider';
 import Checkbox from "primevue/checkbox";
 
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog.vue";
+import ConfirmRestoreDialog from "@/components/common/ConfirmRestoreDialog.vue";
 import ModelTimestamps from "@/components/common/ModelTimestamps.vue";
 import ActivityLog from "@/components/common/ActivityLog.vue";
 import { can } from "@/lib/can";

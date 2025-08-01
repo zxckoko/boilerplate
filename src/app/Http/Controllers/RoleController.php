@@ -18,6 +18,7 @@ class RoleController extends Controller implements HasMiddleware
             new Middleware('permission:roles.create', only: ['create', 'store']),
             new Middleware('permission:roles.edit', only: ['edit', 'update']),
             new Middleware('permission:roles.destroy', only: ['destroy']),
+            new Middleware('permission:restoreRecord', only: ['restore']),
         ];
     }
 
@@ -137,6 +138,7 @@ class RoleController extends Controller implements HasMiddleware
         $role->deleted_by = auth()->user()->id;
         $role->deleted_at = now();
         $role->save();
+        $role->delete();
 
         if ($role !== 0) {
             return to_route('roles.index')
@@ -144,5 +146,12 @@ class RoleController extends Controller implements HasMiddleware
         } else {
             return response([], 404);
         }
+    }
+
+    public function restore(Role $role)
+    {
+        $role->restore();
+
+        return $this->getSuccessMessage('roles.index', $role, $role->name, 'restored');
     }
 }
