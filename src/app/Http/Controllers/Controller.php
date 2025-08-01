@@ -16,12 +16,12 @@ abstract class Controller
         return 'foobar';
     }
 
-    protected function getActivityLogs($subjectId, $subjectType)
+    protected function getActivityLogs($id, $type)
     {
         return Activity::query()
             ->with(['created_by'])
-            ->where('subject_id', $subjectId)
-            ->where('subject_type', $subjectType)
+            ->where('subject_id', $id)
+            ->where('subject_type', $type)
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();

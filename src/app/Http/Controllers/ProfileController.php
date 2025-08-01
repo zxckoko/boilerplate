@@ -30,9 +30,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $activities = $this->getActivityLogs($request->user()->id, $request->user()::class);
+
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'activities' => $activities,
         ]);
     }
 
@@ -71,5 +74,17 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    protected function getActivityLogs($id, $type)
+    {
+        // $activities = $request->user()->actions;
+        return \App\Models\Packages\Activity::query()
+            ->with(['created_by'])
+            ->where('causer_id', request()->user()->id)
+            ->where('causer_type', request()->user()::class)
+            ->orderBy('created_at', 'desc')
+            ->limit(100)
+            ->get();
     }
 }
