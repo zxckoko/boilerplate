@@ -16,7 +16,7 @@ class RolesAndPermissionsSeeder extends Seeder
     public function run(): void
     {
         // MD5:3858f62230ac3c915f300c664312c63f
-        $defaultRoles = ['Guest', 'Administrator'];
+        $defaultRoles = ['Administrator', 'Guest'];
         $defaultPermissions['Guest'] = [
             // MD5:11e4094c95d46ccb8cc60dd9bb905742
             'users.index',
@@ -44,46 +44,64 @@ class RolesAndPermissionsSeeder extends Seeder
 
     private function initRolesAndPermissions($defaultRoles, $defaultPermissions): void
     {
-        foreach ($defaultRoles as $defaultRole) {
-            $role = Role::create([
-                'name' => $defaultRole,
-                'created_by' => 1,
-                'updated_by' => 1,
-            ]);
-
-            foreach ($defaultPermissions[$defaultRole] as $permission) {
-                Permission::create([
-                    'name' => $permission,
-                    'created_by' => 1,
-                    'updated_by' => 1,
-                ]);
-            }
-
-            if ($defaultRole === 'Administrator') {
-                $role->syncPermissions(array_merge(
-                        $defaultPermissions['Administrator'],
-                        $defaultPermissions['Guest'],
-                    )
-                );
-            }
-
-            if ($defaultRole === 'Guest') {
-                $role->syncPermissions($defaultPermissions[$defaultRole]);
-            }
-        }
+        $this->createRoles($defaultRoles);
+        $this->createPermissions($defaultPermissions);
+        $this->syncRolesAndPermissions($defaultRoles, $defaultPermissions);
     }
 
     private function initUsers($defaultRoles): void
     {
-        $users = User::all();
+        $users = User::withTrashed()->get();
 
         foreach ($users as $user) {
             if ($user->id === 1) {
-                $user->syncRoles($defaultRoles[1]);
+                $user->syncRoles($defaultRoles[0]);
             }
 
             if ($user->id > 1) {
-                $user->syncRoles($defaultRoles[0]);
+                $user->syncRoles($defaultRoles[1]);
+            }
+        }
+    }
+
+    private function createRoles($defaultRoles): void
+    {
+        foreach ($defaultRoles as $role) {
+            Role::create([
+                'name' => $role,
+                'created_by' => 1,
+                'updated_by' => 1,
+            ]);
+        }
+    }
+
+    private function createPermissions($defaultPermissions): void
+    {
+        $allPermissions = array_merge(
+            $defaultPermissions['Administrator'],
+            $defaultPermissions['Guest'],
+        );
+
+        foreach ($allPermissions as $permission) {
+            Permission::create([
+                'name' => $permission,
+                'created_by' => 1,
+                'updated_by' => 1,
+            ]);
+        }
+    }
+
+    private function syncRolesAndPermissions($defaultRoles, $defaultPermissions): void
+    {
+        foreach ($defaultRoles as $role) {
+            $role = Role::where('name', $role)->first();
+
+            if ($role->name === $defaultRoles[0]) {
+                $role->syncPermissions(array_merge($defaultPermissions['Administrator'], $defaultPermissions['Guest']));
+            }
+
+            if ($role->name === $defaultRoles[1]) {
+                $role->syncPermissions($defaultPermissions['Guest']);
             }
         }
     }
