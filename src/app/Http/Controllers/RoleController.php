@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
-use App\Models\Role;
 
 class RoleController extends Controller implements HasMiddleware
 {
@@ -28,7 +27,8 @@ class RoleController extends Controller implements HasMiddleware
     public function index()
     {
         $roles = Role
-            ::with(['created_by', 'updated_by', 'permissions'])
+            ::withTrashed()
+            ->with(['created_by', 'updated_by', 'permissions'])
             ->latest('updated_at')
             ->paginate(10);
 
@@ -86,7 +86,7 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function edit(string $id)
     {
-        $role = Role::withTrashed()->with(['created_by', 'updated_by'])->findOrFail($id);
+        $role = Role::withTrashed()->with(['created_by', 'updated_by', 'deleted_by'])->findOrFail($id);
         $activities = $this->getActivityLogs($id, $role::class);
 
         return Inertia::render('Role/Edit', [
@@ -113,7 +113,7 @@ class RoleController extends Controller implements HasMiddleware
                 'permissions' => 'required|array',
             ]);
 
-            $role = Role::find($id);
+            $role = Role::withTrashed()->findOrFail($id);
             $role->name = $request->input('name');
             $role->updated_by = auth()->user()->id;
             $role->updated_at = now();
@@ -133,7 +133,7 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function destroy(string $id)
     {
-        $role = Role::find($id);
+        $role = Role::withTrashed()->findOrFail($id);
         $role->deleted_by = auth()->user()->id;
         $role->deleted_at = now();
         $role->save();

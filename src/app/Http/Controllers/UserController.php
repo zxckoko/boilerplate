@@ -34,7 +34,8 @@ class UserController extends Controller implements HasMiddleware
     public function index()
     {
         $users = User
-            ::with(['created_by', 'updated_by', 'roles'])
+            ::withTrashed()
+            ->with(['updated_by', 'roles'])
             ->latest('updated_at')
             ->paginate(10);
 
@@ -96,7 +97,7 @@ class UserController extends Controller implements HasMiddleware
      */
     public function edit(string $id)
     {
-        $user = User::withTrashed()->with(['created_by', 'updated_by'])->findOrFail($id);
+        $user = User::withTrashed()->with(['created_by', 'updated_by', 'deleted_by'])->findOrFail($id);
         $userRoles = $user->roles()->pluck('name')->all();
         $roles = Role::pluck('name')->all();
         $activities = $this->getActivityLogs($id, $user::class);
@@ -121,7 +122,7 @@ class UserController extends Controller implements HasMiddleware
                 'roles' => 'required|array',
             ]);
 
-            $user = User::find($id);
+            $user = User::withTrashed()->findOrFail($id);
             $user->name = $request->input('name');
             $user->email = $request->input('email');
             $user->address_1 = $request->input('address_1');
@@ -144,7 +145,7 @@ class UserController extends Controller implements HasMiddleware
      */
     public function destroy(string $id)
     {
-        $user = User::find($id);
+        $user = User::withTrashed()->findOrFail($id);
         $user->deleted_by = auth()->user()->id;
         $user->deleted_at = now();
         $user->save();

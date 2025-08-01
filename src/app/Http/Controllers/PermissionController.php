@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
-use App\Models\Permission;
 
 class PermissionController extends Controller implements HasMiddleware
 {
@@ -26,7 +26,8 @@ class PermissionController extends Controller implements HasMiddleware
     public function index()
     {
         $permissions = Permission
-            ::with(['created_by', 'updated_by'])
+            ::withTrashed()
+            ->with(['created_by', 'updated_by'])
             ->latest('updated_at')
             ->paginate(10);
 
@@ -81,7 +82,7 @@ class PermissionController extends Controller implements HasMiddleware
      */
     public function edit(string $id)
     {
-        $permission = Permission::withTrashed()->with(['created_by', 'updated_by'])->findOrFail($id);
+        $permission = Permission::withTrashed()->with(['created_by', 'updated_by', 'deleted_by'])->findOrFail($id);
         $activities = $this->getActivityLogs($id, $permission::class);
 
         return Inertia::render('Permission/Edit', [
@@ -105,7 +106,7 @@ class PermissionController extends Controller implements HasMiddleware
                 ],
             ]);
 
-            $permission = Permission::find($id);
+            $permission = Permission::withTrashed()->findOrFail($id);
             $permission->name = $request->input('name');
             $permission->updated_by = auth()->user()->id;
             $permission->updated_at = now();
@@ -123,7 +124,7 @@ class PermissionController extends Controller implements HasMiddleware
      */
     public function destroy(string $id)
     {
-        $permission = Permission::find($id);
+        $permission = Permission::withTrashed()->findOrFail($id);
         $permission->deleted_by = auth()->user()->id;
         $permission->deleted_at = now();
         $permission->save();

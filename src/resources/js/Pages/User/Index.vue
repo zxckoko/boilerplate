@@ -29,11 +29,11 @@
                 <tbody class="bg-white dark:bg-gray-700">
                 <tr v-for="user in users.data" :key="user.id" class="hover:bg-gray-900 dark:hover:bg-gray-900 focus-within:bg-gray-900">
                     <td class="border-t">
-                        <Link v-if="can('users.edit')" class="flex items-center p-2 focus:text-indigo-500" :href="route('users.edit', user.id)">
-                            {{ user.name }}
+                        <Link v-if="can('users.edit')" class="flex items-center p-2 gap-2 focus:text-indigo-500" :href="route('users.edit', user.id)">
+                            {{ user.name }}<i class="pi pi-trash text-secondary" v-if="user.deleted_at_formatted"></i>
                         </Link>
                         <span v-else class="flex items-center p-2">
-                            {{ user.name }}
+                            {{ user.name }}<i class="pi pi-trash text-secondary" v-if="user.deleted_at_formatted"></i>
                         </span>
                     </td>
                     <td class="border-t">

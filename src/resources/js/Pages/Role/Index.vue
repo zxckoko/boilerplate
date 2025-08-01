@@ -28,10 +28,12 @@
                 <tbody class="bg-white dark:bg-gray-700">
                     <tr v-for="role in roles.data" :key="role.id" class="hover:bg-gray-900 dark:hover:bg-gray-900 focus-within:bg-gray-900">
                         <td class="border-t">
-                            <Link v-if="can('roles.edit')" class="flex items-center p-2 focus:text-indigo-500" :href="route('roles.edit', role.id)">
-                                {{ role.name }}
+                            <Link v-if="can('roles.edit')" class="flex items-center p-2 gap-2 focus:text-indigo-500" :href="route('roles.edit', role.id)">
+                                {{ role.name }}<i class="pi pi-trash text-secondary" v-if="role.deleted_at_formatted"></i>
                             </Link>
-                            <span v-else class="flex items-center p-2">{{ role.name }}</span>
+                            <span v-else class="flex items-center p-2">
+                                {{ role.name }}<i class="pi pi-trash text-secondary" v-if="role.deleted_at_formatted"></i>
+                            </span>
                         </td>
                         <td class="border-t">
                             <Link v-if="can('roles.edit')" class="flex flex-wrap items-center p-2" :href="route('roles.edit', role.id)" tabindex="-1">
