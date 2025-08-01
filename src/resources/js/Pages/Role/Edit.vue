@@ -18,10 +18,10 @@
                     <label for="name">Name</label>
                 </FloatLabel>
 
-                <fieldset class="border border-2 p-2" :disabled="canFoobarData">
+                <fieldset class="border border-2 p-2" :disabled="canEditRolePermissions">
                     <legend class="border text-xs text-gray-400 py-1 px-1 mb-2 ml-2">
                         <div class="flex items-center gap-2">
-                            <span>Permissions</span><i v-if="canFoobarData" class="pi pi-ban text-secondary"></i>
+                            <span>Permissions</span><i v-if="canEditRolePermissions" class="pi pi-ban text-secondary"></i>
                         </div>
                     </legend>
                     <div class="w-full grid grid-cols-2 items-center gap-4">
@@ -66,7 +66,7 @@ import ModelTimestamps from "@/components/common/ModelTimestamps.vue";
 import ActivityLog from "@/components/common/ActivityLog.vue";
 import { can } from "@/lib/can";
 
-const canFoobarData = ! can('foobar');
+const canEditRolePermissions = ! can('editRolePermissions');
 
 const props = defineProps({
     role: Object,

@@ -36,6 +36,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'permissions.edit',
             'permissions.show',
             'permissions.destroy',
+            'editUserRoles',
+            'editRolePermissions',
         ];
 
         $this->initRolesAndPermissions($defaultRoles, $defaultPermissions);
