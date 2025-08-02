@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,10 +26,14 @@ class AppServiceProvider extends ServiceProvider
     {
         Vite::prefetch(concurrency: 3);
 
-        $this->configureAuthToCustomPackges();
+        RateLimiter::for('default', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+
+        $this->configureAuthToCustomPackages();
     }
 
-    private function configureAuthToCustomPackges()
+    private function configureAuthToCustomPackages(): void
     {
         Gate::define('viewPulse', function () {
             return request()->user() && request()->user()->hasRole('Administrator');

@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'verified'])
+Route::middleware(['auth', 'verified', 'throttle:default'])
     ->prefix('dashboard')
     ->group(function () {
         Route::group(['prefix' => 'permissions', 'as' => 'permissions.'], function () {
