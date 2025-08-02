@@ -61,8 +61,6 @@ class RoleController extends Controller implements HasMiddleware
 
             $role = Role::create([
                 'name' => $request->input('name'),
-                'created_by' => auth()->user()->id,
-                'updated_by' => auth()->user()->id,
             ]);
 
             $role->syncPermissions($request->input('permissions'));
@@ -115,8 +113,6 @@ class RoleController extends Controller implements HasMiddleware
 
             $role = Role::withTrashed()->findOrFail($id);
             $role->name = $request->input('name');
-            $role->updated_by = auth()->user()->id;
-            $role->updated_at = now();
             $role->save();
 
             $role->syncPermissions($request->input('permissions'));
@@ -133,9 +129,6 @@ class RoleController extends Controller implements HasMiddleware
     public function destroy(string $id)
     {
         $role = Role::withTrashed()->findOrFail($id);
-        $role->deleted_by = auth()->user()->id;
-        $role->deleted_at = now();
-        $role->save();
         $role->delete();
 
         if ($role !== 0) {

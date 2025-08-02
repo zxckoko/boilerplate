@@ -70,8 +70,6 @@ class UserController extends Controller implements HasMiddleware
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'password' => Hash::make('password'),
-                'created_by' => auth()->user()->id,
-                'updated_by' => auth()->user()->id,
             ]);
 
             $user->syncRoles($request->input('roles'));
@@ -126,8 +124,6 @@ class UserController extends Controller implements HasMiddleware
             $user->email = $request->input('email');
             $user->address_1 = $request->input('address_1');
             $user->address_2 = $request->input('address_2');
-            $user->updated_by = auth()->user()->id;
-            $user->updated_at = now();
             $user->save();
 
             $user->syncRoles($request->input('roles'));
@@ -144,9 +140,6 @@ class UserController extends Controller implements HasMiddleware
     public function destroy(string $id)
     {
         $user = User::withTrashed()->findOrFail($id);
-        $user->deleted_by = auth()->user()->id;
-        $user->deleted_at = now();
-        $user->save();
         $user->delete();
 
         if ($user !== 0) {

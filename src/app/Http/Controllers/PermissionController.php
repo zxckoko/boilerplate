@@ -57,8 +57,6 @@ class PermissionController extends Controller implements HasMiddleware
 
             $permission = Permission::create([
                 'name' => $request->input('name'),
-                'created_by' => auth()->user()->id,
-                'updated_by' => auth()->user()->id,
             ]);
         } catch (\Exception $exception) {
             return back()->withErrors(['message' => $exception->getMessage()]);
@@ -106,8 +104,6 @@ class PermissionController extends Controller implements HasMiddleware
 
             $permission = Permission::withTrashed()->findOrFail($id);
             $permission->name = $request->input('name');
-            $permission->updated_by = auth()->user()->id;
-            $permission->updated_at = now();
             $permission->save();
         } catch (\Exception $exception) {
             return back()->withErrors(['message' => $exception->getMessage()]);
@@ -122,9 +118,6 @@ class PermissionController extends Controller implements HasMiddleware
     public function destroy(string $id)
     {
         $permission = Permission::withTrashed()->findOrFail($id);
-        $permission->deleted_by = auth()->user()->id;
-        $permission->deleted_at = now();
-        $permission->save();
         $permission->delete();
 
         if ($permission !== 0) {

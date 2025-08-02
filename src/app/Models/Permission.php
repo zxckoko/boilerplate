@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Observers\PermissionObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Models\Permission as BasePermission;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy([PermissionObserver::class])]
 class Permission extends BasePermission
 {
     use SoftDeletes, LogsActivity;

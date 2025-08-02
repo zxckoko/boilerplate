@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Observers\RoleObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Models\Role as BaseRole;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy([RoleObserver::class])]
 class Role extends BaseRole
 {
     use SoftDeletes, LogsActivity;
