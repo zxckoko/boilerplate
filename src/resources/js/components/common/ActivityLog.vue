@@ -9,7 +9,10 @@
 
             <div v-for="activity in activities">
                 <div class="p-2">
-                    {{ activity.properties }}
+                    <span v-if="activity.properties.length !== 0">
+                        {{ activity.properties }}
+                    </span>
+                    <span v-else>{{ activity.description }}</span>
                     [<span class="text-xs text-emerald-400">{{ activity.event }}</span>]
                     [<span class="text-xs text-indigo-400">{{ activity.created_by?.name + " @ " + activity.created_at_formatted }}</span>]
                 </div>

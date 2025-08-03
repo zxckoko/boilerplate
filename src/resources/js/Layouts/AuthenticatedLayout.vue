@@ -20,6 +20,13 @@ const showingNavigationDropdown = ref(false);
         <AppSidebar />
 
         <SidebarInset>
+
+    <div>
+        <p v-if="$page.props.auth.impersonator" class="bg-red-300 text-red-900 text-center">
+            {{ $page.props.auth.user.name }} is being impersonated by {{ $page.props.auth.impersonator.name }}
+        </p>
+    </div>
+
     <div>
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav
@@ -88,6 +95,12 @@ const showingNavigationDropdown = ref(false);
                                             :href="route('profile.edit')"
                                         >
                                             Profile
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            v-if="$page.props.auth.impersonator"
+                                            :href="route('impersonate.leave')"
+                                        >
+                                            IMPERSONATE NON GRATA
                                         </DropdownLink>
                                         <DropdownLink
                                             :href="route('logout')"

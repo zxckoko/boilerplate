@@ -7,6 +7,9 @@
                 <Link class="text-indigo-400 hover:text-indigo-600" :href="route('users.index')">Users</Link>
                 <span class="text-indigo-400 font-medium">//</span>
                 {{ form.name }}
+                <Button v-if="$page.props.auth.impersonator === null" as="a" :href="route('impersonate', user.id)">
+                    <UserRoundCog />
+                </Button>
             </h1>
             <ModelTimestamps :modelObject="user" />
         </template>
@@ -68,6 +71,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { Form } from '@primevue/forms';
+import { UserRoundCog } from "lucide-vue-next";
 import Message from 'primevue/message';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';

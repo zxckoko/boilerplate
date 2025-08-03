@@ -35,6 +35,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
                 'permissions' => $request->user()?->getAllPermissions()->pluck('name') ?? [],
+                'impersonator' => \App\Models\User::find(app('impersonate')->getImpersonatorId()),
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

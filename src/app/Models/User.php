@@ -67,6 +67,16 @@ class User extends Authenticatable
             ->dontSubmitEmptyLogs();
     }
 
+    public function canImpersonate()
+    {
+        return $this->hasRole('Administrator');
+    }
+
+    public function canBeImpersonated()
+    {
+        return ! ($this->hasRole('Administrator'));
+    }
+
     public function created_by()
     {
         return $this->belongsTo(User::class, 'created_by');

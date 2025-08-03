@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Packages\ImpersonateController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -48,5 +49,8 @@ Route::middleware(['auth', 'verified', 'throttle:default'])
         });
         Route::resource('users', UserController::class);
     });
+
+Route::get("/impersonate/take/{id}/{guardName?}", [ImpersonateController::class, 'take'])->name('impersonate');
+Route::get("/impersonate/leave", [ImpersonateController::class, 'leave'])->name('impersonate.leave');
 
 require __DIR__.'/auth.php';
