@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\RoleObserver;
+use App\Traits\FilterableTrait;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
@@ -13,20 +14,13 @@ use Spatie\Permission\Models\Role as BaseRole;
 class Role extends BaseRole
 {
     use SoftDeletes, LogsActivity;
+    use FilterableTrait;
 
     protected $appends = [
         'created_at_formatted',
         'updated_at_formatted',
         'deleted_at_formatted',
     ];
-
-    public function getActivityLogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logOnly(['name'])
-            ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
-    }
 
     public function created_by()
     {
@@ -58,5 +52,13 @@ class Role extends BaseRole
         return $this->deleted_at !== null
             ? $this->deleted_at->diffForHumans()
             : null;
+    }
+
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

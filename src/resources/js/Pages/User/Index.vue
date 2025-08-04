@@ -8,7 +8,8 @@
 
         <div class="max-w-full m-8 mb-0 pb-8">
             <div class="flex items-center justify-between mb-6">
-                <p>Search and Filter placeholder</p>
+                <SearchFilter :filters="form.filters" />
+
                 <Button v-if="can('users.create')" as="a" type="button" severity="primary" label="Create User" :href="route('users.create')" />
             </div>
 
@@ -86,12 +87,14 @@
                     </td>
                 </tr>
                 <tr v-if="users.data.length === 0">
-                    <td class="border-t" colspan="4">No users found... Try again!</td>
+                    <td class="border-t" colspan="99">
+                        <p class="text-center text-lg p-2">No users found... Try again!</p>
+                    </td>
                 </tr>
                 </tbody>
             </table>
 
-            <Pagination :links="users.links" class="mb-6"/>
+            <Pagination :links="users.links" class="mb-6" />
         </div>
     </AuthenticatedLayout>
 </template>
@@ -107,12 +110,23 @@ import { can } from "@/lib/can";
 
 <script lang="ts">
 import Pagination from "@/components/common/Pagination.vue";
+import SearchFilter from "@/components/common/SearchFilter.vue";
+
 export default {
     components: {
         Pagination,
+        SearchFilter,
     },
     props: {
         users: Object,
+        filters: Object,
+    },
+    data() {
+        return {
+            form: {
+                filters: this.filters,
+            },
+        }
     },
 }
 

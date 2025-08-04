@@ -8,7 +8,8 @@
 
         <div class="max-w-full m-8 mb-0 pb-8">
             <div class="flex items-center justify-between mb-6">
-                <p>Search and Filter placeholder</p>
+                <SearchFilter :filters="form.filters" />
+
                 <Button v-if="can('roles.create')" as="a" type="button" severity="primary" label="Create Role" :href="route('roles.create')" />
             </div>
 
@@ -81,12 +82,14 @@
                         </td>
                     </tr>
                     <tr v-if="roles.data.length === 0">
-                        <td class="border-t" colspan="4">No roles found... Try again!</td>
+                        <td class="border-t" colspan="99">
+                            <p class="text-center text-lg p-2">No roles found... Try again!</p>
+                        </td>
                     </tr>
                 </tbody>
             </table>
 
-            <Pagination :links="roles.links" class="mb-6"/>
+            <Pagination :links="roles.links" class="mb-6" />
         </div>
     </AuthenticatedLayout>
 </template>
@@ -94,23 +97,32 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from "@inertiajs/vue3";
-import { ChevronsRight } from "lucide-vue-next";
 import Message from "primevue/message";
 import Badge from 'primevue/badge';
-import Pagination from "@/components/common/Pagination.vue";
 import Button from "primevue/button";
 import { can } from "@/lib/can";
 </script>
 
 <script lang="ts">
+import Pagination from "@/components/common/Pagination.vue";
+import SearchFilter from "@/components/common/SearchFilter.vue";
 export default {
     components: {
         Pagination,
+        SearchFilter,
     },
     props: {
         roles: Object,
         created_by: Object,
         updated_by: Object,
+        filters: Object,
+    },
+    data() {
+        return {
+            form: {
+                filters: this.filters,
+            },
+        }
     },
 }
 </script>

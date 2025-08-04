@@ -28,13 +28,15 @@ class RoleController extends Controller implements HasMiddleware
     public function index()
     {
         $roles = Role
-            ::withTrashed()
-            ->with(['created_by', 'updated_by', 'permissions'])
+            ::with(['created_by', 'updated_by', 'permissions'])
             ->latest('updated_at')
-            ->paginate(10);
+            ->filter(request()->only('search', 'trashed'))
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('Role/Index', [
             'roles' => $roles,
+            'filters' => request()->only('search', 'trashed'),
         ]);
     }
 

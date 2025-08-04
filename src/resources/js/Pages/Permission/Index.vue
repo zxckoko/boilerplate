@@ -8,7 +8,8 @@
 
         <div class="max-w-full m-8 mb-0 pb-8">
             <div class="flex items-center justify-between mb-6">
-                <p>Search and Filter placeholder</p>
+                <SearchFilter :filters="form.filters" />
+
                 <Button v-if="can('permissions.create')" as="a" type="button" severity="primary" label="Create Permission" :href="route('permissions.create')" />
             </div>
 
@@ -60,10 +61,13 @@
                         </td>
                     </tr>
                     <tr v-if="permissions.data.length === 0">
-                        <td class="border-t" colspan="4">No permissions found... Try again!</td>
+                        <td class="border-t" colspan="99">
+                            <p class="text-center text-lg p-2">No permissions found... Try again!</p>
+                        </td>
                     </tr>
                 </tbody>
             </table>
+
             <Pagination :links="permissions.links" class="mb-6" />
         </div>
     </AuthenticatedLayout>
@@ -73,20 +77,30 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link} from "@inertiajs/vue3";
 import Message from "primevue/message";
-import Pagination from "@/components/common/Pagination.vue";
 import Button from "primevue/button";
 import {can} from "@/lib/can";
 </script>
 
 <script lang="ts">
+import Pagination from "@/components/common/Pagination.vue";
+import SearchFilter from "@/components/common/SearchFilter.vue";
 export default {
     components: {
         Pagination,
+        SearchFilter,
     },
     props: {
         permissions: Object,
         created_by: Object,
         updated_by: Object,
+        filters: Object,
+    },
+    data() {
+        return {
+            form: {
+                filters: this.filters,
+            },
+        }
     },
 }
 </script>

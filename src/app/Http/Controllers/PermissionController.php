@@ -27,13 +27,15 @@ class PermissionController extends Controller implements HasMiddleware
     public function index()
     {
         $permissions = Permission
-            ::withTrashed()
-            ->with(['created_by', 'updated_by'])
+            ::with(['created_by', 'updated_by'])
             ->latest('updated_at')
-            ->paginate(10);
+            ->filter(request()->only('search', 'trashed'))
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('Permission/Index', [
             'permissions' => $permissions,
+            'filters' => request()->only('search', 'trashed'),
         ]);
     }
 

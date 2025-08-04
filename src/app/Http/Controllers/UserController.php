@@ -34,13 +34,15 @@ class UserController extends Controller implements HasMiddleware
     public function index()
     {
         $users = User
-            ::withTrashed()
-            ->with(['updated_by', 'roles'])
+            ::with(['updated_by', 'roles'])
             ->latest('updated_at')
-            ->paginate(10);
+            ->filter(request()->only('search', 'trashed'), ['name', 'email'])
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('User/Index', [
             'users' => $users,
+            'filters' => request()->only('search', 'trashed'),
         ]);
     }
 
