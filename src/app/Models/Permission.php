@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Models;
+
+use App\Observers\PermissionObserver;
+use App\Traits\FilterableTrait;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Models\Permission as BasePermission;
+
+#[ObservedBy([PermissionObserver::class])]
+class Permission extends BasePermission
+{
+    use SoftDeletes, LogsActivity;
+    use FilterableTrait;
+
+    protected $appends = [
+        'created_at_formatted',
+        'updated_at_formatted',
+        'deleted_at_formatted',
+    ];
+
+    public function created_by()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updated_by()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function deleted_by()
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
+    }
+
+    public function getCreatedAtFormattedAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
+
+    public function getUpdatedAtFormattedAttribute()
+    {
+        return $this->updated_at->diffForHumans();
+    }
+
+    public function getDeletedAtFormattedAttribute()
+    {
+        return $this->deleted_at !== null
+            ? $this->deleted_at->diffForHumans()
+            : null;
+    }
+
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+}

@@ -12,6 +12,7 @@ import {
     PieChart,
     Settings2,
     SquareTerminal,
+    Blocks
 } from 'lucide-vue-next'
 import NavMain from '@/components/NavMain.vue'
 import NavProjects from '@/components/NavProjects.vue'
@@ -62,16 +63,16 @@ const data = {
             isActive: true,
             items: [
                 {
-                    title: 'History',
-                    url: '#',
+                    title: 'Users',
+                    url: '/dashboard/users',
                 },
                 {
-                    title: 'Starred',
-                    url: '#',
+                    title: 'Roles',
+                    url: '/dashboard/roles',
                 },
                 {
-                    title: 'Settings',
-                    url: '#',
+                    title: 'Permissions',
+                    url: '/dashboard/permissions',
                 },
             ],
         },
@@ -137,6 +138,29 @@ const data = {
                 {
                     title: 'Limits',
                     url: '#',
+                },
+            ],
+        },
+        {
+            title: 'Packages',
+            url: '#',
+            icon: Blocks,
+            items: [
+                {
+                    title: 'Horizon',
+                    url: '/horizon',
+                },
+                {
+                    title: 'Pulse',
+                    url: '/pulse',
+                },
+                {
+                    title: 'Telescope',
+                    url: '/telescope',
+                },
+                {
+                    title: 'Log Viewer',
+                    url: '/log-viewer',
                 },
             ],
         },

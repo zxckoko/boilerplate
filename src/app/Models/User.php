@@ -3,14 +3,23 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Observers\UserObserver;
+use App\Traits\FilterableTrait;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Traits\HasRoles;
 
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes, HasRoles, LogsActivity, CausesActivity;
+    use FilterableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -44,5 +53,61 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected $appends = [
+        'created_at_formatted',
+        'updated_at_formatted',
+        'deleted_at_formatted',
+    ];
+
+    public function canImpersonate()
+    {
+        return $this->hasRole('Administrator');
+    }
+
+    public function canBeImpersonated()
+    {
+        return ! ($this->hasRole('Administrator'));
+    }
+
+    public function created_by()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updated_by()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function deleted_by()
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
+    }
+
+    public function getCreatedAtFormattedAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
+
+    public function getUpdatedAtFormattedAttribute()
+    {
+        return $this->updated_at->diffForHumans();
+    }
+
+    public function getDeletedAtFormattedAttribute()
+    {
+        return $this->deleted_at !== null
+            ? $this->deleted_at->diffForHumans()
+            : null;
+    }
+
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name', 'email', 'address_1', 'address_2'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

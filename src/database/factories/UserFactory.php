@@ -17,6 +17,8 @@ class UserFactory extends Factory
      */
     protected static ?string $password;
 
+    protected static ?int $defaultUserId = 1;
+
     /**
      * Define the model's default state.
      *
@@ -24,6 +26,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $trashed = rand(1, 100) % 10 === 0;
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -32,6 +36,10 @@ class UserFactory extends Factory
             'email_verified_at' => now()->addSeconds(rand(60, 600)),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => $trashed ? now() : null,
+            'deleted_by' => $trashed ? static::$defaultUserId : null,
         ];
     }
 
