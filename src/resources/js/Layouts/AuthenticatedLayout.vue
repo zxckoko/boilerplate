@@ -10,6 +10,7 @@ import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sid
 import AppSidebar from "@/components/AppSidebar.vue";
 import { Separator } from '@/components/ui/separator';
 import DarkModeToggle from "@/components/DarkModeToggle.vue";
+import LocaleToggle from "@/components/common/LocaleToggle.vue";
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -40,6 +41,8 @@ const showingNavigationDropdown = ref(false);
                             <Separator orientation="vertical" class="mx-4" />
                             <DarkModeToggle className="-ml-1" />
                             <Separator orientation="vertical" class="mx-4" />
+                            <LocaleToggle v-if="$page.props.locales.length > 1"/>
+                            <Separator v-if="$page.props.locales.length > 1" orientation="vertical" class="mx-4" />
                             <!-- Logo -->
                             <div class="flex shrink-0">
                                 <Link :href="route('dashboard')">

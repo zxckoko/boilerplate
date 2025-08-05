@@ -11,7 +11,8 @@
                         optionLabel="name"
                         optionValue="value"
                         placeholder="Filter"
-                        class="">
+                        class=""
+                        checkmark>
                 </Select>
 
                 <InputText type="text" v-model="form.search" class="rounded shadow" />
@@ -34,7 +35,6 @@ import InputText from 'primevue/inputtext';
 import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 import Button from 'primevue/button';
-
 
 const props = defineProps({
     filters: Object,
