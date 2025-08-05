@@ -34,6 +34,7 @@
         "beyondcode/laravel-self-diagnosis": "^3.0",
         "fakerphp/faker": "^1.23",
         "kitloong/laravel-migrations-generator": "^7.1",
+        "larastan/larastan": "^3.6",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.41",
