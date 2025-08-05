@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
@@ -6,11 +6,27 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
+import AppSidebar from "@/components/AppSidebar.vue";
+import { Separator } from '@/components/ui/separator';
+import DarkModeToggle from "@/components/DarkModeToggle.vue";
 
 const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
+    <SidebarProvider>
+
+        <AppSidebar />
+
+        <SidebarInset>
+
+    <div>
+        <p v-if="$page.props.auth.impersonator" class="bg-red-300 text-red-900 text-center">
+            {{ $page.props.auth.user.name }} is being impersonated by {{ $page.props.auth.impersonator.name }}
+        </p>
+    </div>
+
     <div>
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav
@@ -19,9 +35,13 @@ const showingNavigationDropdown = ref(false);
                 <!-- Primary Navigation Menu -->
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 justify-between">
-                        <div class="flex">
+                        <div class="flex items-center">
+                            <SidebarTrigger className="-ml-1" />
+                            <Separator orientation="vertical" class="mx-4" />
+                            <DarkModeToggle className="-ml-1" />
+                            <Separator orientation="vertical" class="mx-4" />
                             <!-- Logo -->
-                            <div class="flex shrink-0 items-center">
+                            <div class="flex shrink-0">
                                 <Link :href="route('dashboard')">
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
@@ -75,6 +95,12 @@ const showingNavigationDropdown = ref(false);
                                             :href="route('profile.edit')"
                                         >
                                             Profile
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            v-if="$page.props.auth.impersonator"
+                                            :href="route('impersonate.leave')"
+                                        >
+                                            IMPERSONATE NON GRATA
                                         </DropdownLink>
                                         <DropdownLink
                                             :href="route('logout')"
@@ -195,4 +221,6 @@ const showingNavigationDropdown = ref(false);
             </main>
         </div>
     </div>
+        </SidebarInset>
+    </SidebarProvider>
 </template>

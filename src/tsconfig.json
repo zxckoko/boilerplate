@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["resources/js/*"]
+        },
+        "types": ["vite/client", "vue"]
+    },
+    "exclude": ["node_modules", "vendor", "public", "storage"]
+}

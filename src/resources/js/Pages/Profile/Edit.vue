@@ -4,6 +4,7 @@ import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import { Head } from '@inertiajs/vue3';
+import ActivityLog from "@/components/common/ActivityLog.vue";
 
 defineProps({
     mustVerifyEmail: {
@@ -12,6 +13,9 @@ defineProps({
     status: {
         type: String,
     },
+    activities: {
+        type: Object,
+    }
 });
 </script>
 
@@ -49,6 +53,12 @@ defineProps({
                     class="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800"
                 >
                     <DeleteUserForm class="max-w-xl" />
+                </div>
+
+                <div
+                    class="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800"
+                >
+                    <ActivityLog :activities="activities" />
                 </div>
             </div>
         </div>

@@ -1,3 +1,8 @@
 mysql
 .DS_Store
 .idea
+.env
+.env.backup
+.env.production
+data
+dbdata
