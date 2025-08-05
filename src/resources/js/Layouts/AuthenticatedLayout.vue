@@ -8,8 +8,9 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar.vue";
-import { Separator } from '@/components/ui/separator';
-import DarkModeToggle from "@/components/DarkModeToggle.vue";
+import DarkModeToggle from "@/components/common/DarkModeToggle.vue";
+import LocaleToggle from "@/components/common/LocaleToggle.vue";
+import Divider from "primevue/divider";
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -36,10 +37,13 @@ const showingNavigationDropdown = ref(false);
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 justify-between">
                         <div class="flex items-center">
-                            <SidebarTrigger className="-ml-1" />
-                            <Separator orientation="vertical" class="mx-4" />
-                            <DarkModeToggle className="-ml-1" />
-                            <Separator orientation="vertical" class="mx-4" />
+                            <SidebarTrigger />
+                            <Divider layout="vertical" />
+                            <DarkModeToggle />
+                            <Divider layout="vertical" />
+                            <LocaleToggle v-if="$page.props.locales.length > 1" />
+                            <Divider v-if="$page.props.locales.length > 1" layout="vertical" />
+
                             <!-- Logo -->
                             <div class="flex shrink-0">
                                 <Link :href="route('dashboard')">

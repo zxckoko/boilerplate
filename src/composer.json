@@ -34,6 +34,7 @@
         "beyondcode/laravel-self-diagnosis": "^3.0",
         "fakerphp/faker": "^1.23",
         "kitloong/laravel-migrations-generator": "^7.1",
+        "larastan/larastan": "^3.6",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.41",
@@ -42,7 +43,8 @@
         "opcodesio/log-viewer": "^3.18",
         "pestphp/pest": "^3.8",
         "pestphp/pest-plugin-laravel": "^3.2",
-        "pestphp/pest-plugin-stressless": "^3.1"
+        "pestphp/pest-plugin-stressless": "^3.1",
+        "wnx/laravel-stats": "^2.15"
     },
     "autoload": {
         "psr-4": {
@@ -62,7 +64,10 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

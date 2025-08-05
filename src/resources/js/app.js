@@ -4,6 +4,7 @@ import './bootstrap';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
+import { i18n, loadLocaleMessages } from "./i18n.js";
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
@@ -18,15 +19,27 @@ createInertiaApp({
             `./Pages/${name}.vue`,
             import.meta.glob('./Pages/**/*.vue'),
         ),
-    setup({ el, App, props, plugin }) {
+    async setup({ el, App, props, plugin }) {
+        const locale = props.initialPage.props.locale || 'en';
+
+        await loadLocaleMessages(locale)
+
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(PrimeVue, {
                 theme: {
                     preset: Aura,
+                    options: {
+                        cssLayer: {
+                            name: 'primevue',
+                            order: 'theme, base, primevue'
+                        },
+                        darkModeSelector: '.dark',
+                    }
                 },
                 ripple: true,
             })
+            .use(i18n)
             .use(ConfirmationService)
             .use(ZiggyVue)
             .mount(el);
